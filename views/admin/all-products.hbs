@@ -1,0 +1,43 @@
+<section>
+    <div class="container-md"> 
+
+        <div class="row m-md-5 table-responsive " >
+            <table class="table display pt-2 "id="table_id">
+                <thead class="table-dark">
+                    <tr>
+
+                        <th scope="col">Product</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Modal</th>
+                        <th scope="col">color</th>
+                       
+                         <th scope="col">operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products}}
+                    <tr>
+                        <td><img src="/product-image/{{this._id}}.jpg" alt="" style="width:7rem ;"></td>
+                        <td>{{this.name}}</td>
+                        <td>{{this.brand}}</td>
+                        <td>{{this.price}}</td>
+                        <td>{{this.type}}</td>
+                        <td>{{this.year}}</td>
+                        <td>{{this.model}}</td>
+                        <td>{{this.color}}</td>
+                       
+                        <td><a href="/admin/edit-product/{{this._id}}" class="btn btn-primary m-1">Edit</a>
+                            <a href="/admin/delete-product/{{this._id}}" class="btn btn-danger m-1" onclick=" return confirm('Are you sure you want to delete this product')">Delete</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

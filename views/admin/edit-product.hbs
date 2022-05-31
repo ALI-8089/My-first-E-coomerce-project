@@ -1,0 +1,116 @@
+<section style="background-color: #571d65;">
+
+    <div class="container p-5 ">
+
+        <form action="/admin/edit-product/{{product._id}}" method="post" enctype="multipart/form-data" method="post"
+            class="bg-light p-5 border-bottom border-primary">
+            <h1 class="text-center">Edit Products</h1>
+            <div class="my-3">
+                <label class="form-label" >Name</label>
+                <input name="name" type="text" class="form-control" value="{{product.name}}" />
+            </div>
+            <div class="my-3">
+                <label for="exampleInputEmail1" class="form-label">Brand</label>
+                <input name="brand" type="text" class="form-control" value="{{product.brand}}"/>
+            </div>
+            <div >
+                <label for="form-label">Type</label>
+                <select name="type" class="input-group form-control" >
+                    <option value="mtb">mtb</option>
+                    <option value="hybrid">hybrid</option>
+                    <option value="road">road</option>
+                    <option value="gravel">gravel</option>
+                </select>
+            </div>
+
+            <div class="my-3">
+                <label class="form-label">Price</label>
+                <input name="price" type="number" class="form-control" value="{{product.price}}" />
+
+            </div>
+            <div class="my-3">
+                <label class="form-label">Year of launch</label>
+                <input name="year" type="month" class="form-control" value="{{product.year}}"/>
+            </div>
+            <div class="my-3">
+                <label class="form-label">Discription</label>
+                <input name="discription" type="text" class="form-control" value="{{product.discription}}" />
+            </div>
+
+            <div class="my-3">
+                <label class="form-label">Model</label>
+                <input name="model" type="number" class="form-control" value="{{product.model}}"/>
+            </div>
+            <div class="my-3">
+                <label class="form-label">Color</label>
+                <input name="color" type="text" class="form-control"value="{{product.color}}"/>
+            </div>
+            <div class="my-3">
+                <label class="form-label">Upload Image</label>
+                <img src="/product-image/{{product._id}}.jpg" alt="" style="width: 100px;height: auto ;">
+                <input name="image" type="file" class="form-control" />
+            </div>
+
+            <div>
+                <button type="submit" id="first-submit" class="btn btn-primary my-2">Submit</button>
+            </div>
+
+
+            <div class="text-end border-top border-warning ">
+                <a id="dis-ena-btn" class="btn btn-warning mt-3">Add spec </a>
+            </div>
+            <div id="product-spec">
+                <h1 class="border-bottom border-secondary p-2">Specification</h1>
+                <div class="my-3">
+                    <h4 class="border-bottom border-secondary p-2">Frameset</h4>
+
+                </div>
+                <div class="my-3">
+                    <label for="exampleInputEmail1" class="form-label">Frame</label>
+                    <input name="frame" type="text" class="form-control" />
+                </div>
+                <div class="my-3">
+                    <label class="form-label">Fork</label>
+                    <input name="fork" type="text" class="form-control" />
+
+                </div>
+                <div class="my-3">
+                    <label class="form-label">Shock</label>
+                    <input name="shock" type="text" class="form-control" />
+                </div>uired
+                <div class="my-3">
+                    <label class="form-label">Max compatible fork</label>
+                    <input name="Mfork" type="text" class="form-control" />
+                </div>
+                <h4 class="border-bottom border-psecondray p-2">Wheels</h4>
+
+
+                <div class="my-3">
+                    <label class="form-label">Wheel front</label>
+                    <input name="Wfront" type="text" class="form-control" />
+                </div>
+                <div class="my-3">
+                    <label class="form-label">Wheel rear</label>
+                    <input name="Wrear" type="text" class="form-control" />
+                </div>
+                <div class="my-3">
+                    <label class="form-label">Skewer rear</label>
+                    <input name="Srear" type="text" class="form-control" />
+                </div>
+                <div class="my-3">
+                    <label class="form-label">Rim Bontrager</label>
+                    <input name="rim" type="text" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
+
+
+        </form>
+
+
+
+
+    </div>
+</section>

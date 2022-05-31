@@ -1,0 +1,70 @@
+<section>
+  <div class='d-flex justify-content-center align-items-center login-bg' style='height: 100vh;'>
+    <form action='/signup' method='post' id="signup-form" class='  p-4  border border-light border-4'
+      style="background-color:#461652;width:50rem ;">
+      <h1 class='text-center text-white'>
+        Signup
+      </h1>
+        {{#if signupErr}}
+    <div class="bg-light p-1">
+      <h5 class="text-danger text-center my-3 ">{{signupErr}}</h5>
+    </div>
+    {{/if}}
+      <div class='my-2 signup-label'>
+        <label for='exampleInputEmail1' class='form-label'>
+          Firstname
+        </label>
+        <input name='fname' type='text' class='form-control' id="form-fname" placeholder="Enter Firstname" required />
+        <span class='text-danger fw-bold error-form' id='fname-error-message'>
+
+        </span>
+      </div>
+
+      <div class='my-2 signup-label'>
+        <label for='exampleInputEmail1' class='form-label'>
+          Lastname
+        </label>
+        <input name='lname' type='text' class='form-control' id="form-lname" placeholder="Enter Lastname" required />
+        <span class='text-danger fw-bold error-form' id='lname-error-message'>
+
+        </span>
+      </div>
+      <div class='my-2 signup-label'>
+        <label for='exampleInputEmail1' class='form-label'>
+          Email address
+        </label>
+        <input name='email' type='email' class='form-control ' id='form-email' aria-describedby='emailHelp'
+          placeholder="Enter Email" required />
+        <span class=' error-form text-danger fw-bold' id='email-error-message'>
+
+        </span>
+      </div>
+      <div class='my-2 signup-label'>
+        <label for='exampleInputPassword1' class='form-label'>
+          Password
+        </label>
+        <input name='password' type='password' class='form-control  ' id='form-password' placeholder="Enter password"
+          required />
+        <span class='error-form text-danger fw-bold' id='password-error-message'>
+
+        </span>
+      </div>
+      <div class='mb-3 signup-label'>
+        <label for='exampleInputPassword1' class='form-label'>
+          Confirm Password
+        </label>
+        <input type='password' class='form-control  ' id='form-confirm' required  placeholder="Re-enter password"/>
+        <span class=' error-form text-danger fw-bold' id='confirm-error-message'>
+
+        </span>
+      </div>
+      <a href="/login" id='signup-button' class="text-decoration-none text-light">
+        Already have an account ?
+      </a>
+
+      <div class='d-flex justify-content-center py-3'>
+        <button id='signup-button' type='submit' class='btn btn-primary w-50'> Submit </button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,73 @@
+<section>
+ <div class=' d-flex justify-content-center align-items-center login-bg ' style='height: 100vh'>
+    <form action='/login' method="post" id="login-form" class='py-4  p-4 mb-5 border border-light border-4' style="background-color:#461652; width:50rem;" >
+      <h1 class='text-center text-white'>
+        Login
+      </h1>
+      <div class='mt-3'>
+        <label for='email' class='form-label fw-bold text-white'>
+          Email:
+        </label>
+          <input
+          name='email'
+          type='email'
+          class='form-control '
+          id='form-email'
+          aria-describedby='emailHelp'
+          placeholder="example@12gmail.com"
+          required
+        />
+        <span class=' error-form text-danger fw-bold' id='email-error-message'>
+
+        </span>
+      </div>
+      
+      <div class='my-3'>
+        <label for='pwd' class='form-label fw-bold text-white'>
+          Password:
+        </label>
+       <input
+          name='password'
+          type='password'
+          class='form-control  '
+          id='form-password'
+          placeholder="abc123@#$"
+          required
+        />
+        <span
+          class='error-form text-danger fw-bold'
+          id='password-error-message'
+        >
+         
+        </span>
+      </div>
+      {{!-- <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label text-light" for="exampleCheck1">Check me out</label>
+  </div> --}}
+
+      <div class='py-3 text-center'>
+        <button type='submit' class='btn btn-primary w-50'>
+          Log In
+        </button>
+      </div>
+      {{#if loginErr}}
+    <div>
+      <h5 class="text-danger  my-3 ">{{loginErr}}</h5>
+    </div>
+    {{/if}}
+      <h4 class="text-center text-light fw-bold">Or</h4>
+        <div class='d-flex justify-content-center py-3'>
+        <a
+        href="/signup"
+          id='signup-button'
+          type='submit'
+          class='btn btn-success w-50'
+         
+        >
+          Sign Up
+        </a>
+      </div>
+    </form>
+  </div>
+</section>

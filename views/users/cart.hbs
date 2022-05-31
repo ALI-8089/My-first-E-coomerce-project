@@ -1,0 +1,43 @@
+<section class="m-5">
+    <div class="container ">
+        {{#each products}}
+        <div class="row cart-row m-2 border-top p-2">
+            <div class="delete-icon text-end">
+                <button onclick="deleteCartProduct('{{this._id}}','{{this.products._id}}')"> <img src="/images/clarity_remove-solid.png"></button>
+            </div>
+                
+            <div class="col-12 col-md-7 d-flex align-items-center" style="width:25rem ;">
+                <img src="/product-image/{{this.products._id}}.jpg" class="img-fluid" alt="">
+
+            </div>
+            <div class="col-12 col-md-4 d-flex justify-content-center ">
+                <div class="cart mt-5">
+                    <h1 class="mb-3">{{this.products.name}}</h1>
+                    <h6>{{this.products.year}}</h6>
+                    <div class="d-flex align-items-center">
+                        <h6 id="colorName">{{this.products.color}}</h6>
+                        <div class="color-box mx-5 pb-3" id="color-box"></div>
+                    </div>
+                    <h4 class="">₹ {{this.products.price}}</h4>
+                    
+                    
+                    <div class="my-5">
+                        <button class="me-2" onclick="changeQuantity('{{this._id}}','{{this.products._id}}','{{../user._id}}',-1)">-</button>
+                        <span id="{{this.products._id}}">{{this.quantity}}</span>
+                        <button class="ms-2" onclick="changeQuantity('{{this._id}}','{{this.products._id}}','{{../user._id}}',1)" >+</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>  
+        {{/each}}
+        <div class=" ">
+            <h4 class="text-end border-bottom p-3 mx-3">TOTAL </h4>
+            <h4 class=" text-end mx-3 p-3 ">₹ <span id="total">{{totalValue}}</span></h4>
+            <a href='/place-order' type='' class='btn proceed-btn ms-5 '>
+                Proceed to buy
+            </a>
+        </div>
+    </div>
+    </div>
+</section>

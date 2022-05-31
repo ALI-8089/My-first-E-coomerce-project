@@ -1,0 +1,47 @@
+<div class='container-fluid p-5'>
+  <div class='row d-none d-md-block'>
+    <h1 class='text-center'>
+      What is Mountain Bike ?
+    </h1>
+
+    <p style='font-size: larger;'>
+      A mountain bike (MTB ) or mountain bicycle is a bicycle designed for off-road cycling. Mountain bikes share some
+      similarities withother bicycles, but incorporate
+      features designed to enhance durability and performance in rough terrain, which makes them heavier, more complex
+      and less efficient on smooth surfaces.These
+      typically include a suspension fork, large knobby tires, more durable wheels, more powerful brakes, straight,
+      extra wide handlebars to improve balance and comfort
+      over rough terrain, and wide-ratio gearing optimised for topography and application (e.g., steep climbing or fast
+      descending). Rear suspension is ubiquitous in
+      heavier-duty bikes and now common even in lighter bikes.
+    </p>
+  </div>
+  <div class='row mt-5'>
+    {{#each products}}
+    <div class='col-12 col-md-6'>
+
+      <div class='card border-0  shadow p-3 my-2 bg-body rounded'>
+        <div class=' d-flex justify-content-between align-items-center'>
+          <h1 class='card-title'>
+            {{this.name}}
+          </h1>
+          <h4>
+            {{this.brand}}
+          </h4>
+        </div>
+        <a href="/product-spec"> <img src="/product-image/{{this._id}}.jpg" alt=''
+            class='card-img-top  img-fluid' /></a>
+
+        <div class='card-body d-flex justify-content-between align-items-center'>
+         
+          <button onclick="addToCart('{{this._id}}')" class="btn text-white fw-bold" style='background-color: #571d65;'>Add to cart</button>
+          <h4>
+            {{this.price}}
+          </h4>
+
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</div>

@@ -1,0 +1,310 @@
+<header>
+  <nav
+    class='navbar navbar-expand-lg navbar-dark'
+    style='background-color: #571d65'
+  >
+    <div class='container-fluid'>
+      <a class='navbar-brand logo' href='/'>
+        <img class="img-fluid" src='/images/logo.png' alt='' />
+      </a>
+      <a class='navbar-brand me-auto' href='/'>
+        <img class="img-fluid" src='/images/CycMaster.png' alt='' />
+      </a>
+
+      <div class='collapse navbar-collapse' id='navbarSupportedContent'>
+        <ul class='navbar-nav me-auto ms-auto mb-2 mb-lg-0 ms-5 text-center'>
+          <li class='nav-item'>
+            <a class='nav-link active ps-5 pe-5' aria-current='page' href='#'>
+              Home
+            </a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link pe-5 ps-5' href='/mountain-bike'>
+              Mountian
+            </a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link pe-5 ps-5' href='/hybrid-bike'>
+              Hybrid
+            </a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link pe-5 ps-5' href='/road-bike'>
+              Road
+            </a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link pe-5 ps-5' href='/gravel-bike'>
+              Gravel
+            </a>
+          </li>
+        </ul>
+        <form class='d-flex ms-auto mx-3'>
+          <input
+            class='form-control me-2'
+            type='search'
+            placeholder='Search'
+            aria-label='Search'
+          />
+        </form>
+      </div>
+      <div class='mx-3 position-relative'>
+       <a href="/cart" ><i  class='bi bi-cart3 px-3 text-white  display-6 ' > </i>
+       {{#if user}}
+       <span class="position-absolute top-0  start-100 bg-warning text-dark  translate-middle badge rounded-pill " id="cart-count">
+    {{cartCount}}
+    <span class="visually-hidden">unread messages</span>
+  </span>
+  {{/if}}
+  </a>
+      </div>
+
+      <div class='dropdown mx-3'>
+        <a
+          class='btn dropdown-toggle text-white'
+          role='button'
+          id='dropdownMenuLink'
+          data-bs-toggle='dropdown'
+          aria-expanded='false'
+        >
+          <img src='/images/ic_sharp-account-circle.png' alt='' />
+        </a>
+
+        <ul
+          class='dropdown-menu  dropdown-menu-end'
+          aria-labelledby='dropdownMenuLink'
+        >
+          <li>
+            <a class='dropdown-item fw-bold' href='/order-details'>
+              Profile
+            </a>
+          </li>
+          <li>
+            <a class='dropdown-item fw-bold' href='/orders'>
+              All Orders
+            </a>
+          </li>
+          <li>
+            {{#if user}}
+            <a
+              class='dropdown-item fw-bold'
+              href='/logout'
+              {{!-- data-bs-toggle='modal'  
+              data-bs-target='#login-modal' --}}
+            >                                  
+            Logout
+            </a>
+            {{else}}
+            <a
+              class='dropdown-item fw-bold'
+              href='/login'
+              {{!-- data-bs-toggle='modal'
+              data-bs-target='#login-modal' --}}
+            >                            
+             Login
+             </a>
+            {{/if}}
+          </li>
+        </ul>
+      </div>
+      <button
+        class='navbar-toggler'
+        type='button'
+        data-bs-toggle='collapse'
+        data-bs-target='#navbarSupportedContent'
+        aria-controls='navbarSupportedContent'
+        aria-expanded='false'
+        aria-label='Toggle navigation'
+      >
+        <span class='navbar-toggler-icon'></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+{{! madal for both user login and user signup }}
+
+{{!-- <section>
+  <div
+    class='modal fade'
+    id='login-modal'
+    tabindex='-1'
+    aria-labelledby='exampleModalLabel'
+    aria-hidden='true'
+  >
+    <div class='modal-dialog modal-dialog-centered'>
+      <div class='modal-content signin-modal' style='border:outset ;'>
+        <div class='modal-header'>
+          <button
+            type='button'
+            class='btn-close btn-close-white'
+            data-bs-dismiss='modal'
+            aria-label='Close'
+          ></button>
+        </div>
+        <div class='modal-body align-middle'>
+          <ul class='nav nav-tabs' id='myTab' role='tablist'>
+            <li
+              class='nav-item w-50 d-flex justify-content-center'
+              role='presentation'
+            >
+              <button
+                class='nav-link active w-100'
+                id='login-tab'
+                data-bs-toggle='tab'
+                data-bs-target='#login'
+                type='button'
+                role='tab'
+                aria-controls='home'
+                aria-selected='true'
+              >
+                Login
+              </button>
+            </li>
+            <li
+              class='nav-item w-50 d-flex justify-content-center'
+              role='presentation'
+            >
+              <button
+                class='nav-link  w-100'
+                id='profile-tab'
+                data-bs-toggle='tab'
+                data-bs-target='#signup'
+                type='button'
+                role='tab'
+                aria-controls='profile'
+                aria-selected='false'
+              >
+                Signup
+              </button>
+            </li>
+          </ul>
+          <div class='tab-content' id='myTabContent'>
+            <div
+              class='tab-pane fade show active'
+              id='login'
+              role='tabpanel'
+              aria-labelledby='login-tab'
+            >
+              {{! form signin}}
+              <div class='container mt-5 d-flex justify-content-center'>
+                <form action='/login' method="post" class='pt-5'>
+                  <div class='mb-3 mt-3'>
+                    <label for='email' class='form-label fw-bold text-white'>
+                      Email:
+                    </label>
+                    <input
+                      type='email'
+                      class='form-control'
+                      id='email'
+                      placeholder='Enter email'
+                      name='email'
+                    />
+                  </div>
+                  <div class='mb-3'>
+                    <label for='pwd' class='form-label fw-bold text-white'>
+                      Password:
+                    </label>
+                    <input
+                      type='password'
+                      class='form-control'
+                      id='pwd'
+                      placeholder='Enter password'
+                      name='password'
+                    />
+                  </div>
+
+                  <div class='py-5'>
+                    <button type='submit' class='btn btn-primary w-100'>
+                      Log In
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            {{! form signin}}
+            {{! form signup}}
+            <div
+              class='tab-pane fade'
+              id='signup'
+              role='tabpanel'
+              aria-labelledby='profile-tab'
+            >
+              <div class='container mt-5 d-flex justify-content-center'>
+                <form action='/signup' method='post'>
+                  <div class='my-3 signup-label'>
+                    <label for='exampleInputEmail1' class='form-label'>
+                      Firstname
+                    </label>
+                    <input
+                      name='fname'
+                      type='text'
+                      class='form-control'
+                      required
+                    />
+                  </div>
+                  <div class='my-3 signup-label'>
+                    <label for='exampleInputEmail1' class='form-label'>
+                      Lastname
+                    </label>
+                    <input name='lname' type='text' class='form-control' />
+                  </div>
+                  <div class='my-3 signup-label'>
+                    <label for='exampleInputEmail1' class='form-label'>
+                      Email address
+                    </label>
+                    <input
+                      name='email'
+                      type='email'
+                      class='form-control'
+                      id='exampleInputEmail1'
+                      aria-describedby='emailHelp'
+                      required
+                    />
+                  </div>
+                  <div class='my-3 signup-label'>
+                    <label for='exampleInputPassword1' class='form-label'>
+                      Password
+                    </label>
+                    <input
+                      name='password'
+                      type='password'
+                      class='form-control'
+                      id='exampleInputPassword1'
+                      required
+                    />
+                  </div>
+                  <div class='mb-3 signup-label'>
+                    <label for='exampleInputPassword1' class='form-label'>
+                      Confirm Password
+                    </label>
+                    <input
+                      name='Cpassword'
+                      type='password'
+                      class='form-control'
+                      id='exampleInputPassword1'
+                      required
+                    />
+                  </div>
+
+                  <div class='d-flex justify-content-center py-5'>
+                    <button
+                      id='signup-button'
+                      type='submit'
+                      class='btn btn-primary w-100'
+                      data-bs-toggle='tab'
+                      data-bs-target='#login'
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            {{! form signup}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> --}}
