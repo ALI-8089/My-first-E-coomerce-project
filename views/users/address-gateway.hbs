@@ -1,24 +1,25 @@
 <section>
     <div class="container my-5">
-        <form action="/place-order" id="checkout-form">
+        <form action="/place-order" id="checkout-form" method="post">
             <div class="row">
 
                 <h1 class="">Select a Delivery Address</h1>
+                {{#if delAddress}}
                 <div class="col-md-8 py-2 border-warning border-top border-2 d-flex justify-content-center ">
                     <div class="col ">
                         <a href="" class="btn btn-warning shadow">Edit Address</a>
 
                     </div>
                     <div class="col d-flex  ">
-                        <input type="radio" name="Address" value="address" class="form-check-input me-3" checked>
-                        <p name="Address"> Ali akbar p 80898888548 <br>
-                            Palliyali
-                            (H), Kodinhi (PO), Payyoli ,<br> 676309 , Kerela -
+                        <input type="radio" name="Address" value="{{delAddress.delivaryAddress}}" class="form-check-input me-3" required>
+                        <p name="Address"> {{delAddress.delivaryAddress.fname}} {{delAddress.delivaryAddress.lname}}  80898888548 <br>
+                           {{delAddress.delivaryAddress.address}},<br> {{delAddress.delivaryAddress.pincode}} {{delAddress.delivaryAddress.city}}<br> {{delAddress.delivaryAddress.state}} -
                             India</p>
                     </div>
-                    {{!-- <small class="bg-secondary p-1 text-light">HOME</small> --}}
+                   
 
                 </div>
+                {{/if}}
                 <div class="col-md-4  ">
                     <div class="shadow  p-3">
                         <h5 class=" border-bottom p-2 fw-bold text-secondary"> PRICE DETAILS</h5>
@@ -54,19 +55,12 @@
                         <div class=" d-flex flex-column  align-items-center">
                             <label class="bg-info shadow m-3 p-1">Cash On Delivery</label>
                             <input type="radio" name="payment-method" value="COD" class="form-check-input">
-                            <input type="text" name="user" value="{{user._id}}" hidden>
+                        
                         </div>
 
                     </div>
                 </div>
-                <div>
-                    <label for="">Address</label>
-                    <input type="text" name="address">
-                    <label for="">pincode</label>
-                    <input type="text" name="pincode">
-                    <label for="">mobile</label>
-                    <input type="text" name="mobile">
-                </div>
+              
                 <div class="text-center  mt-5 ">
                     <button type="submit" class="btn text-white fw-bold" style='background-color: #571d65;'>
                         Checkout

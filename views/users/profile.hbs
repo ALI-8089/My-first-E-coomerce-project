@@ -1,0 +1,71 @@
+<section style="background-color:#f0f0f0 ;">
+    <div class="container-md">
+        <div class="row p-md-5 p-xs ">
+            <div class="col-md-4 ">
+                <div class="row">
+                    <div class="col d-flex border shadow-sm justify-content-start bg-white  p-2">
+                        {{#if gen}}
+                        <img src="/images/man.png" alt="" style="width: 5rem;">
+                        {{else}}
+                         <img src="/images/girl.png" alt="" style="width: 5rem;">
+                         {{/if}}
+                        <div class="col mx-2 d-flex flex-column justify-content-center">
+                            <small>Hello,</small>
+                            <h6 class="m-2"> {{profile.fname}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row bg-white border shadow-sm my-2">
+                    <a class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
+                        <h4>MY ORDERS</h4>
+                        <img src="/images/right.png" alt="" style="width: 2rem;">
+                    </a>
+
+                </div>
+                <div class="row shadow-sm border my-2 bg-white">
+                    <a class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
+                        <h4>MY CART</h4>
+                        <img src="/images/right.png" alt="" style="width: 2rem;">
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-md-7 shadow-sm border bg-white mx-2 p-5 position-relative">
+                <div class="position-absolute end-0 top-0 p-2">
+                    <a href="/edit-profile/{{profile._id}}">
+                         <img src="/images/edit.png" alt="" style="width: 1.5rem;">
+                    </a>
+                </div>
+                <h5>Personal Information</h5>
+                <div class="d-flex justify-content-between p-2">
+                    <label class="text-secondary" for="">First Name</label>
+                    <h6 >{{profile.fname}}</h6>
+                </div>
+
+                <div class="d-flex justify-content-between p-2">
+                    <label class="text-secondary" for="">Last Name</label>
+                    <h6>{{profile.lname}}</h6>
+
+                </div>
+                <div class="d-flex justify-content-between p-2">
+                    <label class="text-secondary" for="">Your Gender</label>
+                    <h6>{{profile.gender}}</h6>
+                </div>
+
+                <h5>Email Address</h5>
+                <div class="d-md-flex justify-content-between p-2">
+                    <label class="text-secondary" for="">Email ID</label>
+                    <h6>{{profile.email}}</h6>
+                </div>
+            </div>
+            <div class="col-md-4 shadow-sm  border my-2 bg-white">
+                <a href=""
+                    class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
+                    <h4>LOGOUT</h4>
+                    <img src="/images/right.png" alt="" style="width: 2rem;">
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>

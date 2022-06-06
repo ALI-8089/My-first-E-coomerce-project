@@ -3,6 +3,7 @@ const db = require('../config mongo/mongo-connection')
 const bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb')
 const Razorpay = require('razorpay')
+const async = require('hbs/lib/async')
 // var instance = new Razorpay({
 //   key_id: 'rzp_test_AOR6LcLadTlBtS',
 //   key_secret: 'P7pl9FbDIpQUQSjlsQFZaxZQ',
@@ -17,7 +18,7 @@ module.exports = {
         .findOne({ email: data.email })
       if (user) {
         console.log('user already exist')
-        resolve({status:true})
+        resolve({ status: true })
       } else {
         data.password = await bcrypt.hash(data.password, 10)
         db.get()
@@ -25,7 +26,7 @@ module.exports = {
           .insertOne(data)
           .then((response) => {
             console.log(response)
-            resolve({status:false})
+            resolve({ status: false })
           })
       }
     })
@@ -57,19 +58,167 @@ module.exports = {
     })
   },
   getproducts: (data) => {
-    console.log(data);
     return new Promise(async (resolve, reject) => {
       let product = await db
         .get()
         .collection(collection.productCollection)
-        .find({type:data})
+        .find({ type: data })
         .toArray()
 
       resolve(product)
     })
   },
+  getOneProduct: (proId) => {
+    console.log(proId)
+    return new Promise(async (resolve, reject) => {
+      let product = await db
+        .get()
+        .collection(collection.productCollection)
+        .findOne({ _id: ObjectId(proId) })
+      console.log(product)
+      resolve(product)
+    })
+  },
+  guestCart: (guestId, proId) => {
+    console.log(guestId)
+    let proObj = {
+      items: ObjectId(proId),
+      quantity: 1,
+    }
+    return new Promise(async (resolve, reject) => {
+      let guest = await db
+        .get()
+        .collection(collection.guestCollection)
+        .findOne({ guest: guestId })
+      if (guest) {
+        let proExist = guest.product.findIndex(
+          (product) => product.items == proId,
+        )
+        if (proExist != -1) {
+          db.get()
+            .collection(collection.guestCollection)
+            .updateOne(
+              { guest: guestId, 'product.items': ObjectId(proId) },
+              {
+                $inc: { 'product.$.quantity': 1 },
+              },
+            )
+            .then(() => {
+              resolve()
+            })
+        } else {
+          db.get()
+            .collection(collection.guestCollection)
+            .updateOne(
+              { guest: guestId },
+              {
+                $push: { product: proObj },
+              },
+            )
+            .then(() => {
+              resolve()
+            })
+        }
+      } else {
+        let cartObj = {
+          guest: guestId,
+          product: [proObj],
+        }
+        db.get()
+          .collection(collection.guestCollection)
+          .insertOne(cartObj)
+          .then((response) => {
+            resolve(response)
+          })
+      }
+    })
+  },
+  getGuestCartProduct: (guestId) => {
+    console.log(guestId)
+    return new Promise(async (resolve, reject) => {
+      let guestCartItems = await db
+        .get()
+        .collection(collection.guestCollection)
+        .aggregate([
+          {
+            $match: { guest: guestId },
+          },
+          {
+            $unwind: '$product',
+          },
+          {
+            $project: {
+              items: '$product.items',
+              quantity: '$product.quantity',
+            },
+          },
+          {
+            $lookup: {
+              from: collection.productCollection,
+              localField: 'items',
+              foreignField: '_id',
+              as: 'products',
+            },
+          },
+          {
+            $project: {
+              items: 1,
+              quantity: 1,
+              products: { $arrayElemAt: ['$products', 0] },
+            },
+          },
+        ])
+        .toArray()
+      console.log(guestCartItems)
+      resolve(guestCartItems)
+    })
+  },
+  guestTotalAmount: (guestId) => {
+    return new Promise(async (resolve, reject) => {
+      let total = await db
+        .get()
+        .collection(collection.guestCollection)
+        .aggregate([
+          {
+            $match: { guest: guestId },
+          },
+          {
+            $unwind: '$product',
+          },
+          {
+            $project: {
+              items: '$product.items',
+              quantity: '$product.quantity',
+            },
+          },
+          {
+            $lookup: {
+              from: collection.productCollection,
+              localField: 'items',
+              foreignField: '_id',
+              as: 'products',
+            },
+          },
+          {
+            $project: {
+              items: 1,
+              quantity: 1,
+              products: { $arrayElemAt: ['$products', 0] },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              total: { $sum: { $multiply: ['$quantity', '$products.price'] } },
+            },
+          },
+        ])
+        .toArray()
+      console.log(total)
+      resolve(total[0].total)
+    })
+  },
 
-  
   addToCart: (proId, userId) => {
     let proObj = {
       items: ObjectId(proId),
@@ -160,7 +309,7 @@ module.exports = {
           },
         ])
         .toArray()
-      // console.log(cartItems[0].products)
+      console.log(cartItems)
       resolve(cartItems)
     })
   },
@@ -271,13 +420,12 @@ module.exports = {
           },
         ])
         .toArray()
-      console.log(total)
+
       resolve(total[0].total)
     })
   },
-  palceOrder: (order, products, total) => {
+  palceOrder: (order, products, total, userId) => {
     return new Promise((resolve, reject) => {
-      // console.log(order, products, total)
       let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
       let oderObj = {
         deliveryDetails: {
@@ -285,7 +433,7 @@ module.exports = {
           address: order.address,
           pincode: order.pincode,
         },
-        userId: ObjectId(order.user),
+        userId: ObjectId(userId),
         paymentMethod: order['payment-method'],
         products: products,
         status: status,
@@ -298,20 +446,17 @@ module.exports = {
         .then((response) => {
           db.get()
             .collection(collection.cartCollection)
-            .deleteOne({ user: ObjectId(order.user) })
-          console.log('_id', response.insertedId)
+            .deleteOne({ user: ObjectId(userId) })
           resolve(response.insertedId)
         })
-    }) 
+    })
   },
   getCartProductList: (userId) => {
-    // console.log(userId)
     return new Promise(async (resolve, reject) => {
       let cart = await db
         .get()
         .collection(collection.cartCollection)
         .findOne({ user: ObjectId(userId) })
-      // console.log(cart)
       resolve(cart.product)
     })
   },
@@ -321,27 +466,16 @@ module.exports = {
       let orders = await db
         .get()
         .collection(collection.orderCollection)
-        .find({ userId: ObjectId(userId) })
-        .toArray()
-      // console.log(orders)
-      resolve(orders)
-    })
-  },
-  getOrderProducts: (orderId) => {
-    // console.log(orderId);
-    return new Promise(async (resolve, reject) => { 
-      let orderItems = await db 
-        .get()
-        .collection(collection.orderCollection) 
-        .aggregate([ 
+        .aggregate([
           {
-            $match: { _id: ObjectId(orderId) },
+            $match: { userId: ObjectId(userId) },
           },
-          {
-            $unwind: '$products',
-          },
+
           {
             $project: {
+              status: 1,
+              total: 1,
+              date: 1,
               items: '$products.items',
               quantity: '$products.quantity',
             },
@@ -354,18 +488,55 @@ module.exports = {
               as: 'products',
             },
           },
+        ])
+        .toArray()
+      console.log('******', orders[3].products)
+      resolve(orders)
+    })
+  },
+  getOrderProducts: (orderId) => {
+    // console.log(orderId);
+    return new Promise(async (resolve, reject) => {
+      let orderItems = await db
+        .get()
+        .collection(collection.orderCollection)
+        .aggregate([
+          {
+            $match: { _id: ObjectId(orderId) },
+          },
+          {
+            $unwind: '$products',
+          },
           {
             $project: {
-              items: 1,
-              quantity: 1,
-              products: { $arrayElemAt: ['$products', 0] },
+              status: 1,
+              total: 1,
+              date: 1,
+              items: '$products.items',
+              quantity: '$products.quantity',
+            },
+          },
+          {
+            $lookup: {
+              from: collection.productCollection,
+              localField: 'items',
+              foreignField: '_id',
+              as: 'product',
+            },
+          },
+          {
+            $lookup: {
+              from: collection.userCollection,
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'deliveryAddress',
             },
           },
         ])
         .toArray()
-      // console.log(orderItems);
+      console.log(orderItems)
 
-      resolve(orderItems[0])
+      resolve(orderItems)
     })
   },
   getUserOrdersWithProduct: (userId, proId) => {
@@ -395,7 +566,7 @@ module.exports = {
         currency: 'INR',
         receipt: '' + orderId,
       })
-      // console.log("New order",order);
+      console.log('1', order)
       resolve(order)
     })
   },
@@ -413,26 +584,91 @@ module.exports = {
       hmac = hmac.digest('hex')
       console.log(hmac)
       if (hmac == details['payment[razorpay_signature]']) {
-       
         resolve()
       } else {
-        reject()``
-      } 
+        reject()
+      }
     })
   },
   changePaymentStatus: (orderId) => {
+    console.log('50', orderId)
+    if (orderId) {
+      return new Promise((resolve, reject) => {
+        db.get()
+          .collection(collection.orderCollection)
+          .update(
+            { _id: ObjectId(orderId) },
+            {
+              $set: {
+                status: 'placed',
+              },
+            },
+          )
+          .then(() => {
+            resolve()
+          })
+      })
+    } else {
+      console.log('reject')
+      reject()
+    }
+  },
+  getProfile: (userId) => {
+    console.log('db', userId)
+    return new Promise(async (resolve, reject) => {
+      let profile = await db
+        .get()
+        .collection(collection.userCollection)
+        .findOne({ _id: ObjectId(userId) })
+      console.log(profile)
+      resolve(profile)
+    })
+  },
+  editProfile: (userId, profile) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection(collection.orderCollection)
-        .update(
-          { _id: ObjectId(orderId) },
+        .collection(collection.userCollection)
+        .updateOne(
+          { _id: ObjectId(userId) },
           {
             $set: {
-              status: 'placed',
+              fname: profile.fname,
+              lname: profile.lname,
+              email: profile.email,
+              gender: profile.gender,
             },
           },
         )
         .then(() => {
+          resolve()
+        })
+    })
+  },
+  createAddress: (userId, data) => {
+    return new Promise((resolve, reject) => {
+      deliveryAddress = {
+        fname: data.fname,
+        lname: data.lname,
+        mobile: data.mobile,
+        pincode: data.pincode,
+        address: data.address,
+        locality: data.locality,
+        city: data.city,
+        state: data.state,
+        addressType: data.addressType,
+      }
+
+      db.get()
+        .collection(collection.userCollection)
+        .updateOne(
+          { _id: ObjectId(userId) },
+          {
+            $set: { delivaryAddress: deliveryAddress },
+          },
+          { upsert: true },
+        )
+        .then((comfirm) => {
+          console.log(comfirm)
           resolve()
         })
     })

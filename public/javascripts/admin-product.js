@@ -35,43 +35,67 @@ function addToCart(proId) {
 function changeQuantity(cartId, proId, userId, count) {
   let quantity = parseInt(document.getElementById(proId).innerHTML)
   count = parseInt(count)
-  $.ajax({
-    url: '/change-product-quantity',
-    data: {
-      user: userId,
-      cart: cartId,
-      product: proId,
-      count: count,
-      quantity: quantity,
-    },
-    method: 'post',
-    success: (response) => {
-      if (response.removeProduct) {
-        alert('product removed from cart')
-        location.reload()
-      } else {
-        document.getElementById(proId).innerHTML = quantity + count
-        document.getElementById('total').innerHTML = response.total
-      }
-    },
-  })
+  if (count == -1 && quantity == 1) {
+    if (confirm('r u want to deleter product')) {
+      $.ajax({
+        url: '/change-product-quantity',
+        data: {
+          user: userId,
+          cart: cartId,
+          product: proId,
+          count: count,
+          quantity: quantity,
+        },
+        method: 'post',
+        success: (response) => {
+          if (response.removeProduct) {
+            location.reload()
+          } else {
+            document.getElementById(proId).innerHTML = quantity + count
+            document.getElementById('total').innerHTML = response.total
+          }
+        },
+      })
+    }
+  } else {
+    $.ajax({
+      url: '/change-product-quantity',
+      data: {
+        user: userId,
+        cart: cartId,
+        product: proId,
+        count: count,
+        quantity: quantity,
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          location.reload()
+        } else {
+          document.getElementById(proId).innerHTML = quantity + count
+          document.getElementById('total').innerHTML = response.total
+        }
+      },
+    })
+  }
 }
 
 function deleteCartProduct(cartId, proId) {
-  $.ajax({
-    url: '/delete-cart-product',
-    data: {
-      cart: cartId,
-      product: proId,
-    },
-    method: 'post',
-    success: (response) => {
-      if (response.removeProduct) {
-        alert('product removed from cart')
-        location.reload()
-      }
-    },
-  })
+  if (confirm('r u want to delete')) {
+    $.ajax({
+      url: '/delete-cart-product',
+      data: {
+        cart: cartId,
+        product: proId,
+      },
+      method: 'post',
+      success: (response) => {
+        if (response.removeProduct) {
+          location.reload()
+        }
+      },
+    })
+  }
 }
 
 $('#checkout-form').submit((e) => {
@@ -81,20 +105,24 @@ $('#checkout-form').submit((e) => {
     method: 'post',
     data: $('#checkout-form').serialize(),
     success: (response) => {
-      console.log(response)
-      if (response.codSuccess) {
+      if (response.codSuccess) { 
         $('#exampleModal').modal('show')
         $('#exampleModal').on('hidden.bs.modal', function () {
           location.href = '/orders'
         })
       } else {
-        razorpayPayment(response)
+        let result = razorpayPayment(response, () => {
+          if (!result) {
+            location.href = '/orders'
+          }
+        })
       }
     },
   })
 })
 
 function razorpayPayment(order) {
+  alert('4')
   var options = {
     key: 'rzp_test_AOR6LcLadTlBtS', // Enter the Key ID generated from the Dashboard
     amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -104,8 +132,11 @@ function razorpayPayment(order) {
     image: 'https://example.com/your_logo',
     order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
+      alert('sart')
       verifyPayment(response, order)
+      alert('end')
     },
+
     prefill: {
       name: 'Gaurav Kumar',
       email: 'gaurav.kumar@example.com',
@@ -122,6 +153,7 @@ function razorpayPayment(order) {
   rzp1.open()
 }
 function verifyPayment(payment, order) {
+  alert('5')
   $.ajax({
     url: '/verify-payment',
     data: {
@@ -136,13 +168,25 @@ function verifyPayment(payment, order) {
           location.href = '/orders'
         })
       } else {
-        alert('payment failed')
+        alert('')
       }
     },
   })
 }
 // ******************admin*************
 
-$(document).ready( function () {
-  $('#table_id').DataTable();
-} );
+$(document).ready(function () {
+  $('#table_id').DataTable()
+})
+
+let mainImage = document.getElementById('main-image')
+let subImage = document.getElementsByClassName('sub-image')
+subImage[0].onclick = function () {
+  mainImage.src = subImage[0].src
+}
+subImage[1].onclick = function () {
+  mainImage.src = subImage[1].src
+}
+subImage[2].onclick = function () {
+  mainImage.src = subImage[2].src
+}

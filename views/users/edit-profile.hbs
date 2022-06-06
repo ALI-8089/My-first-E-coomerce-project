@@ -1,0 +1,64 @@
+<section style="background-color:#f0f0f0">
+    <div class='d-flex justify-content-center align-items-center ' style='height: 100vh;'>
+        <form action='/edit-profile/{{profile._id}}' method='post' id="signup-form" class=' border  shadow-sm  p-4  '
+            style="background-color:#ffffff;width:50rem ;">
+            <h1 class='text-center '>
+                Edit Profile
+            </h1>
+            {{#if signupErr}}
+            <div class="bg-light p-1">
+                <h5 class="text-danger text-center my-3 ">{{signupErr}}</h5>
+            </div>
+            {{/if}}
+            <div class='my-3 '>
+                <label for='exampleInputEmail1' class='form-label'>
+                    First Name
+                </label>
+                <input name='fname' type='text' class='form-control border-0 border-bottom ' value='{{profile.fname}}' id="form-fname"
+                    placeholder="Enter Firstname" required />
+                <span class='text-danger fw-bold error-form' id='fname-error-message'>
+
+                </span>
+            </div>
+            <div class='my-3 '>
+                <label for='exampleInputEmail1' class='form-label'>
+                    Last Name
+                </label>
+                <input name='lname' type='text' class='form-control border-0 border-bottom' value="{{profile.lname}}" id="form-lname"
+                    placeholder="Enter Lastname" required />
+                <span class='text-danger fw-bold error-form' id='lname-error-message'>
+
+                </span>
+            </div>
+            <div class='my-3 '>
+                <label for='exampleInputEmail1' class='form-label'>
+                    Email Address
+                </label>
+                <input name='email' type='email' class='form-control border-0 border-bottom' value="{{profile.email}}" id='form-email'
+                    aria-describedby='emailHelp' placeholder="Enter Email" required />
+                <span class=' error-form text-danger fw-bold' id='email-error-message'>
+
+                </span>
+            </div>
+            <div>
+                <label for="">Your Gender</label>
+                <div class="d-flex justify-content-evenly mt-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" value="Male" id="flexRadioDefault1 "
+                            required>
+                        <label for="">Male</label>
+
+                    </div>
+                    <div class="form-check ">
+                        <input class="form-check-input" type="radio" name="gender" value="Female" id="flexRadioDefault1"
+                            required>
+                        <label for="">Female</label>
+                    </div>
+                </div>
+            </div>
+            <div class='d-flex justify-content-center py-5'>
+                <button id='signup-button' type='submit' class='btn btn-primary w-50'> Submit </button>
+            </div>
+        </form>
+    </div>
+</section>

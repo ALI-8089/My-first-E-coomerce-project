@@ -2,7 +2,8 @@ var db = require('../config mongo/mongo-connection')
 const collection = require('../config mongo/mongo-collections')
 const { ObjectId } = require('mongodb')
 module.exports = {
-  addProduct: (product, callback) => {
+  addProduct: (image,product ) => {
+   
     // console.log(product)
     let basicDetails = {
       name: product.name,
@@ -13,6 +14,7 @@ module.exports = {
       discription: product.discription,
       model: product.model,
       color: product.color,
+      image:image,
       spec: [
         {
           frame: product.frame,
@@ -30,9 +32,9 @@ module.exports = {
       .insertOne(basicDetails)
       .then((data) => {
         //   console.log(data);
-        callback(data.insertedId)
+         
       })
-  },
+  }, 
   getAllProduct: () => {
     return new Promise(async (resolve, reject) => {
       let products = await db
@@ -63,7 +65,7 @@ module.exports = {
         .then((product) => {
           resolve(product)
         })
-    })
+    })  
   },
   updateProduct: (proId, proDetails) => {
     return new Promise(async (resolve, reject) => {

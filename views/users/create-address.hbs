@@ -1,71 +1,74 @@
 <section class="m-5">
     <div class="container shadow p-5">
-        <div class="row border-bottom border-warning pb-3">
-            <h1 class="border-bottom border-warning pb-3">Delivery Address</h1>
-            <div class="col-md-4 ">
-                <h4>Personal Details</h4>
-                <div class="m-3">
-                    <label class="form-label">First Name</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter First Name" />
+        <form action="/create-address" method="post">
+            <div class="row border-bottom border-warning pb-3">
+                <h1 class="border-bottom border-warning pb-3">Delivery Address</h1>
+                <div class="col-md-4 ">
+                    <h4>Personal Details</h4>
+                    <div class="m-3">
+                        <label class="form-label">First Name</label>
+                        <input name="fname" type="text" class="form-control" placeholder="Enter First Name" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">Last Name</label>
+                        <input name="lname" type="text" class="form-control" placeholder="Enter Last Name" />
+                    </div>
                 </div>
-                <div class="m-3">
-                    <label class="form-label">Last Name</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter Last Name" />
-                </div>
-            </div>
 
-        </div>
-        <div class="row my-3">
-            <h4>Shipping Details</h4>
-            <div class="col-md-6">
+            </div>
+            <div class="row my-3">
+                <h4>Shipping Details</h4>
+                <div class="col-md-6">
 
-                <div class="m-3">
-                    <label class="form-label">Phone Number</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter Phone Number" />
-                </div>
-                <div class="m-3">
-                    <label class="form-label">Pin Code</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter Pin Code" />
-                </div>
-                <div class="m-3">
-                    <label class="form-label">Address</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter Address" />
-                </div>
-                <div class="m-3">
-                    <label class="form-label">Locality</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter Locality" />
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="m-3">
-                    <label class="form-label">State</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter State" />
-                </div>
-                <div class="m-3">
-                    <label class="form-label">City</label>
-                    <input name="Wfront" type="text" class="form-control" placeholder="Enter City" />
-                </div>
-                <h4>Address Type</h4>
-                <div class=" d-flex justify-content-start">
-                    <div class="m-3 d-flex flex-column align-items-center">
-                        <h6>work</h6>
-                        <input type="radio">
+                    <div class="m-3">
+                        <label class="form-label">Phone Number</label>
+                        <input name="mobile" type="text" class="form-control" placeholder="Enter Phone Number" />
                     </div>
-                    <div class="m-3 d-flex flex-column align-items-center">
-                        <h6>Home</h6>
-                        <input type="radio">
+                    <div class="m-3">
+                        <label class="form-label">Pin Code</label>
+                        <input name="pincode" type="text" class="form-control" placeholder="Enter Pin Code" />
                     </div>
-                    <div class="m-3 d-flex flex-column align-items-center">
-                        <h6>Other</h6>
-                        <input type="radio">
+                    <div class="m-3">
+                        <label class="form-label">Address</label>
+                        <input name="address" type="text" class="form-control" placeholder="Enter Address" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">Locality</label>
+                        <input name="locality" type="text" class="form-control" placeholder="Enter Locality" />
                     </div>
                 </div>
-               
-            </div>
-             <div class="mt-5 text-center">
-                    <a href='' type='button' class='btn btn-warning ' >
+                <div class="col-md-6">
+                    <div class="m-3">
+                        <label class="form-label">City</label>
+                        <input name="city" type="text" class="form-control" placeholder="Enter City" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">State</label>
+                        <input name="state" type="text" class="form-control" placeholder="Enter State" />
+                    </div>
+                    <h4>Address Type</h4>
+                    <div class=" d-flex justify-content-start">
+                        <div class="m-3 d-flex flex-column align-items-center">
+                            <h6>work</h6>
+                            <input type="radio" name="addressType" value="WORK" class="form-check-input">
+                        </div>
+                        <div class="m-3 d-flex flex-column align-items-center">
+                            <h6>Home</h6>
+                            <input type="radio" name="addressType" value="HOME" class="form-check-input">
+                        </div>
+                        <div class="m-3 d-flex flex-column align-items-center">
+                            <h6>Other</h6>
+                            <input type="radio" name="addressType" value="other" class="form-check-input">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-5 text-center">
+                    <button  type='submit' class='btn btn-warning fw-bold'>
                         Pay And Place Order
-                    </a>
+                    </button>
                 </div>
-        </div>
+            </div>
+        </form>
+    </div>
 </section>

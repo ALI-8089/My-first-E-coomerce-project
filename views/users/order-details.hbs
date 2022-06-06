@@ -14,11 +14,11 @@
             <div class="col p-2 bg-light mx-2 shadow-sm">
                 <h4>Delivery Address</h4>
 
-                <h6>Ali akbar</h6>
-                <small>{{orders.delivery.address}}</small> <br> {{orders.deliveryDetails.landmark}} <br> {{orders.deliveryDetails.pincode}} ,
+                <h6>{{user.fname}} {{user.lname}}</h6>
+                <small>{{user.address}}</small> <br> {{user.locality}} <br> {{user.pincode}} ,
                     Kerala</small>
                 <h6 class="mt-3">Phone number</h6>
-                <small>{{orders.deliveryDetails.mobile}}</small>
+                <small>{{user.mobile}}</small>
                 <P class="fw-bold text-primary text-end">Your order will be delivered within 7 days</P>
             </div>
         </div>
