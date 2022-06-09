@@ -1,26 +1,33 @@
 <section>
     <div class="container-xl">
-        <div class="row my-3">
-            <div class="col p-2 bg-light d-flex  align-items-center shadow-sm">
-                <img src="/product-image/{{products.products._id}}.jpg" style="width: 20rem;" alt="">
-                <div class="p-2">
-                    <h4>{{products.products.name}}</h4>
-                    <h6>{{products.products.brand}}</h6>
-                    <p>{{products.products.color}}</p>
-                    <h6>₹{{products.products.price}}</h6>
-                    <P>status : <small class="text-success"> {{orders.status}} </small> <small> on {{orders.date}}</small></P>
-                </div>
-            </div>
-            <div class="col p-2 bg-light mx-2 shadow-sm">
+ <div class=" p-2 bg-light mx-2 shadow-sm">
                 <h4>Delivery Address</h4>
 
                 <h6>{{user.fname}} {{user.lname}}</h6>
                 <small>{{user.address}}</small> <br> {{user.locality}} <br> {{user.pincode}} ,
-                    Kerala</small>
+                Kerala</small>
                 <h6 class="mt-3">Phone number</h6>
                 <small>{{user.mobile}}</small>
+                <h6 class="fw-bold my-3"> Total Amout {{total}}</h6>
                 <P class="fw-bold text-primary text-end">Your order will be delivered within 7 days</P>
             </div>
+        <div class="row my-3">
+            {{#each products}}
+            <div class="col p-2 bg-light d-flex  align-items-center shadow-sm">
+                <img src="data:{{this.product.0.image.0.contentType}};base64,{{this.product.0.image.0.image}}"
+                    style="width: 20rem;" alt="">
+                <div class="p-2">
+                    <h4>{{this.product.0.name}}</h4>
+                    <h6>{{this.product.0.brand}}</h6>
+                    <p>{{this.product.0.color}}</p>
+                    <h6>₹{{this.product.0.price}}</h6>
+                    <P>status : <small class="text-success"> {{this.status}} </small> <small> on {{this.date}}</small>
+                    </P>
+                </div>
+            </div> 
+            {{/each}}
+           
         </div>
+
     </div>
 </section>

@@ -25,7 +25,8 @@ heavier-duty bikes and now common even in lighter bikes.
                 {{this.brand}}
               </h4>
             </div>
-          <img src="/product-image/{{this._id}}.jpg" alt='' class='card-img-top  img-fluid' />
+          <a href="/product-spec/{{this._id}}"> <img src="data:{{this.image.0.contentType}};base64,{{this.image.0.image}}" alt=''
+            class='card-img-top  img-fluid' /> </a>
 
           <div class='card-body d-flex justify-content-between align-items-center'>
             <button onclick="addToCart('{{this._id}}')" class="btn text-white fw-bold" style='background-color: #571d65;'>Add to cart</button>

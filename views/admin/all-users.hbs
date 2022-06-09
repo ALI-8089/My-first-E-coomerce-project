@@ -1,0 +1,42 @@
+<section>
+    <div class="row m-md-5 table-responsive ">
+        <table class="table display pt-2 " id="table_id">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Sl.No</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Gender</th>
+                       <th scope="col">Orders</th>
+                    <th scope="col">Opration</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td>{{@index}}</td>
+                    <td>{{this.fname}}</td>
+                    <td>{{this.lname}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.gender}}</td>
+                    <td> <a href="/admin/user-orders/{{this._id}}"><img src="/images/delete.png" style="width: 2.5rem;"></a></td>
+                    <td>
+                        {{#if this.blocked}}
+
+                        <a href="/admin/unblock-user/{{this._id}}" id="block-btn" class="btn btn-danger m-1">UNBLOCK</a>
+                        {{else}}
+                        <a href="/admin/block-user/{{this._id}}" id="block-btn"
+                            onclick="return confirm('Are you want to block this user')"
+                            class="btn btn-danger m-1">BLOCK</a>
+                        {{/if}}
+                    </td>
+                </tr>
+                {{/each}}
+
+            </tbody>
+        </table>
+    </div>
+</section>

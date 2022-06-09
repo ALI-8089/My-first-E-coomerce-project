@@ -48,7 +48,7 @@
             <div class="my-3">
                 <label class="form-label">Upload Image</label>
                 <img src="/product-image/{{product._id}}.jpg" alt="" style="width: 100px;height: auto ;">
-                <input name="image" type="file" class="form-control" />
+                <input name="images" multiple type="file" class="form-control" />
             </div>
 
             <div>
@@ -67,39 +67,39 @@
                 </div>
                 <div class="my-3">
                     <label for="exampleInputEmail1" class="form-label">Frame</label>
-                    <input name="frame" type="text" class="form-control" />
+                    <input name="frame" type="text" value="{{product.spec.0.frame}}" class="form-control" />
                 </div>
                 <div class="my-3">
                     <label class="form-label">Fork</label>
-                    <input name="fork" type="text" class="form-control" />
+                    <input name="fork" type="text" value="{{product.spec.0.fork}}" class="form-control" />
 
                 </div>
                 <div class="my-3">
                     <label class="form-label">Shock</label>
-                    <input name="shock" type="text" class="form-control" />
-                </div>uired
+                    <input name="shock" type="text" value="{{product.spec.0.shock}}" class="form-control" />
+                </div>
                 <div class="my-3">
                     <label class="form-label">Max compatible fork</label>
-                    <input name="Mfork" type="text" class="form-control" />
+                    <input name="Mfork" type="text" value="{{product.spec.0.Mfork}}" class="form-control" />
                 </div>
                 <h4 class="border-bottom border-psecondray p-2">Wheels</h4>
 
 
                 <div class="my-3">
                     <label class="form-label">Wheel front</label>
-                    <input name="Wfront" type="text" class="form-control" />
+                    <input name="Wfront" type="text" value="{{product.spec.0.Wfront}}" class="form-control" />
                 </div>
                 <div class="my-3">
                     <label class="form-label">Wheel rear</label>
-                    <input name="Wrear" type="text" class="form-control" />
+                    <input name="Wrear" type="text" value="{{product.spec.0.Wrear}}" class="form-control" />
                 </div>
                 <div class="my-3">
                     <label class="form-label">Skewer rear</label>
-                    <input name="Srear" type="text" class="form-control" />
+                    <input name="Srear" type="text" value="{{product.spec.0.Srear}}" class="form-control" />
                 </div>
                 <div class="my-3">
                     <label class="form-label">Rim Bontrager</label>
-                    <input name="rim" type="text" class="form-control" />
+                    <input name="rim" type="text" value="{{product.spec.0.rim}}" class="form-control" />
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

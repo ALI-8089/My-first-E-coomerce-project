@@ -23,10 +23,12 @@ function addToCart(proId) {
     url: '/add-to-cart/' + proId,
     method: 'get',
     success: (response) => {
-      if (response.status) {
+      if (response.login) {
         let count = $('#cart-count').html()
         count = parseInt(count) + 1
         $('#cart-count').html(count)
+      } else {
+        location.href = '/guest-empty-cart'
       }
     },
   })
@@ -105,7 +107,7 @@ $('#checkout-form').submit((e) => {
     method: 'post',
     data: $('#checkout-form').serialize(),
     success: (response) => {
-      if (response.codSuccess) { 
+      if (response.codSuccess) {
         $('#exampleModal').modal('show')
         $('#exampleModal').on('hidden.bs.modal', function () {
           location.href = '/orders'
@@ -122,7 +124,6 @@ $('#checkout-form').submit((e) => {
 })
 
 function razorpayPayment(order) {
-  alert('4')
   var options = {
     key: 'rzp_test_AOR6LcLadTlBtS', // Enter the Key ID generated from the Dashboard
     amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -132,9 +133,7 @@ function razorpayPayment(order) {
     image: 'https://example.com/your_logo',
     order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
-      alert('sart')
       verifyPayment(response, order)
-      alert('end')
     },
 
     prefill: {
@@ -153,7 +152,6 @@ function razorpayPayment(order) {
   rzp1.open()
 }
 function verifyPayment(payment, order) {
-  alert('5')
   $.ajax({
     url: '/verify-payment',
     data: {
@@ -179,14 +177,26 @@ $(document).ready(function () {
   $('#table_id').DataTable()
 })
 
-let mainImage = document.getElementById('main-image')
-let subImage = document.getElementsByClassName('sub-image')
-subImage[0].onclick = function () {
-  mainImage.src = subImage[0].src
-}
-subImage[1].onclick = function () {
-  mainImage.src = subImage[1].src
-}
-subImage[2].onclick = function () {
-  mainImage.src = subImage[2].src
-}
+$(document).ready(function () {
+  $('#add-btn').click(function () {
+    let value = $('#input').val()
+    $('#type').append(new Option(value), value)
+  })
+})
+// function blockUser(userId){
+// $.ajax({
+// url:'/admin/block-user',
+// data:{
+//   userId:userId
+// },
+// method:'post',
+// success:(response) => {
+//   alert("hi")
+//   if(response){
+//     $('#block-btn').html("Blocked")
+
+//   }
+
+// }
+// })
+// }

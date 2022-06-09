@@ -7,13 +7,13 @@
       <a class='navbar-brand me-auto' href='/'>
         <img class="img-fluid" src='/images/CycMaster.png' alt='' />
       </a>
-{{#if cart}}
-{{else}}
+      {{#if cart}}
+      {{else}}
 
       <div class='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul class='navbar-nav me-auto ms-auto mb-2 mb-lg-0 ms-5 text-center'>
           <li class='nav-item'>
-            <a class='nav-link active ps-5 pe-5' aria-current='page' href='#'>
+            <a class='nav-link active ps-5 pe-5' aria-current='page' href='/'>
               Home
             </a>
           </li>
@@ -38,11 +38,16 @@
             </a>
           </li>
         </ul>
-        <form class='d-flex ms-auto mx-3'>
-          <input class='form-control me-2' type='search' placeholder='Search' aria-label='Search' />
+        <form class='d-flex ms-auto mx-3  ' action="/search" method="post">
+          <div class="position-relative">
+            <input class='form-control me-2 ' name="search" type='search' placeholder='Search' aria-label='Search' />
+            <button type="submit" class="position-absolute border-0 bg-transparent"
+              style="right: 0rem; top: 0rem;"></button>
+          </div>
+
         </form>
       </div>
-      <div class='mx-3 position-relative'>
+      <div class='position-relative'>
         <a href="/cart"><i class='bi bi-cart3 px-3 text-white  display-6 '> </i>
           {{#if user}}
           <span class="position-absolute top-0  start-100 bg-warning text-dark  translate-middle badge rounded-pill "
@@ -55,7 +60,7 @@
       </div>
       {{/if}}
 
-      <div class='dropdown mx-3'>
+      <div class='dropdown mx-1'>
         <a class='btn dropdown-toggle text-white' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown'
           aria-expanded='false'>
           <img src='/images/ic_sharp-account-circle.png' alt='' />

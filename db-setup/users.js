@@ -3,11 +3,8 @@ const db = require('../config mongo/mongo-connection')
 const bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb')
 const Razorpay = require('razorpay')
-const async = require('hbs/lib/async')
-// var instance = new Razorpay({
-//   key_id: 'rzp_test_AOR6LcLadTlBtS',
-//   key_secret: 'P7pl9FbDIpQUQSjlsQFZaxZQ',
-// })
+
+
 
 module.exports = {
   DoSignup: (data) => {
@@ -57,6 +54,22 @@ module.exports = {
       }
     })
   },
+  search: (key) => {
+    return new Promise(async (resolve, reject) => {
+      let products = await db
+        .get() 
+        .collection(collection.productCollection)
+        .find({
+          $or:[
+            {name:{$regex:key.search ,'$options' : 'i'}},
+            {brand:{$regex:key.search ,'$options' : 'i'}},
+            {type:{$regex:key.search ,'$options' : 'i'}},
+          ]
+        }).toArray()
+        console.log(products);
+        resolve(products)
+    })
+  },
   getproducts: (data) => {
     return new Promise(async (resolve, reject) => {
       let product = await db
@@ -75,147 +88,7 @@ module.exports = {
         .get()
         .collection(collection.productCollection)
         .findOne({ _id: ObjectId(proId) })
-      console.log(product)
-      resolve(product)
-    })
-  },
-  guestCart: (guestId, proId) => {
-    console.log(guestId)
-    let proObj = {
-      items: ObjectId(proId),
-      quantity: 1,
-    }
-    return new Promise(async (resolve, reject) => {
-      let guest = await db
-        .get()
-        .collection(collection.guestCollection)
-        .findOne({ guest: guestId })
-      if (guest) {
-        let proExist = guest.product.findIndex(
-          (product) => product.items == proId,
-        )
-        if (proExist != -1) {
-          db.get()
-            .collection(collection.guestCollection)
-            .updateOne(
-              { guest: guestId, 'product.items': ObjectId(proId) },
-              {
-                $inc: { 'product.$.quantity': 1 },
-              },
-            )
-            .then(() => {
-              resolve()
-            })
-        } else {
-          db.get()
-            .collection(collection.guestCollection)
-            .updateOne(
-              { guest: guestId },
-              {
-                $push: { product: proObj },
-              },
-            )
-            .then(() => {
-              resolve()
-            })
-        }
-      } else {
-        let cartObj = {
-          guest: guestId,
-          product: [proObj],
-        }
-        db.get()
-          .collection(collection.guestCollection)
-          .insertOne(cartObj)
-          .then((response) => {
-            resolve(response)
-          })
-      }
-    })
-  },
-  getGuestCartProduct: (guestId) => {
-    console.log(guestId)
-    return new Promise(async (resolve, reject) => {
-      let guestCartItems = await db
-        .get()
-        .collection(collection.guestCollection)
-        .aggregate([
-          {
-            $match: { guest: guestId },
-          },
-          {
-            $unwind: '$product',
-          },
-          {
-            $project: {
-              items: '$product.items',
-              quantity: '$product.quantity',
-            },
-          },
-          {
-            $lookup: {
-              from: collection.productCollection,
-              localField: 'items',
-              foreignField: '_id',
-              as: 'products',
-            },
-          },
-          {
-            $project: {
-              items: 1,
-              quantity: 1,
-              products: { $arrayElemAt: ['$products', 0] },
-            },
-          },
-        ])
-        .toArray()
-      console.log(guestCartItems)
-      resolve(guestCartItems)
-    })
-  },
-  guestTotalAmount: (guestId) => {
-    return new Promise(async (resolve, reject) => {
-      let total = await db
-        .get()
-        .collection(collection.guestCollection)
-        .aggregate([
-          {
-            $match: { guest: guestId },
-          },
-          {
-            $unwind: '$product',
-          },
-          {
-            $project: {
-              items: '$product.items',
-              quantity: '$product.quantity',
-            },
-          },
-          {
-            $lookup: {
-              from: collection.productCollection,
-              localField: 'items',
-              foreignField: '_id',
-              as: 'products',
-            },
-          },
-          {
-            $project: {
-              items: 1,
-              quantity: 1,
-              products: { $arrayElemAt: ['$products', 0] },
-            },
-          },
-          {
-            $group: {
-              _id: null,
-              total: { $sum: { $multiply: ['$quantity', '$products.price'] } },
-            },
-          },
-        ])
-        .toArray()
-      console.log(total)
-      resolve(total[0].total)
+           resolve(product)
     })
   },
 
@@ -425,6 +298,10 @@ module.exports = {
     })
   },
   palceOrder: (order, products, total, userId) => {
+    let d= new Date()
+    let time = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+
     return new Promise((resolve, reject) => {
       let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
       let oderObj = {
@@ -438,7 +315,7 @@ module.exports = {
         products: products,
         status: status,
         total: total,
-        date: new Date(),
+        date: time,
       }
       db.get()
         .collection(collection.orderCollection)
@@ -490,7 +367,7 @@ module.exports = {
           },
         ])
         .toArray()
-      console.log('******', orders[3].products)
+      
       resolve(orders)
     })
   },
@@ -524,22 +401,15 @@ module.exports = {
               as: 'product',
             },
           },
-          {
-            $lookup: {
-              from: collection.userCollection,
-              localField: 'userId',
-              foreignField: '_id',
-              as: 'deliveryAddress',
-            },
-          },
+          
         ])
         .toArray()
-      console.log(orderItems)
+      
 
       resolve(orderItems)
     })
   },
-  getUserOrdersWithProduct: (userId, proId) => {
+  getUserOrdersWithProduct: (userId, proId) => { 
     return new Promise(async (resolve, reject) => {
       console.log(userId, proId)
       let orders = await db
@@ -639,7 +509,7 @@ module.exports = {
             },
           },
         )
-        .then(() => {
+        .then(() => { 
           resolve()
         })
     })

@@ -9,20 +9,20 @@
 
                 <div class=" border border-2 border-secondary my-1 ">
 
-                    <img src="data:{{product.image.0.contentType}};base64,{{product.image.0.image}}" alt="" 
-                        class="img-fluid sub-image" role="button"/>
+                    <img src="data:{{product.image.0.contentType}};base64,{{product.image.0.image}}" alt=""
+                        class="img-fluid sub-image" role="button" />
                 </div>
 
                 <div class=" border border-2 border-secondary my-1 ">
 
-                    <img src="data:{{product.image.1.contentType}};base64,{{product.image.1.image}}" alt="" 
-                        class="img-fluid sub-image" role="button"  />
+                    <img src="data:{{product.image.1.contentType}};base64,{{product.image.1.image}}" alt=""
+                        class="img-fluid sub-image" role="button" />
                 </div>
 
                 <div class=" border border-2 border-secondary my-1 ">
 
-                    <img src="data:{{product.image.2.contentType}};base64,{{product.image.2.image}}" alt="" 
-                        class="img-fluid sub-image" role="button"  />
+                    <img src="data:{{product.image.2.contentType}};base64,{{product.image.2.image}}" alt=""
+                        class="img-fluid sub-image" role="button" />
                 </div>
 
 
@@ -50,16 +50,28 @@
                     <div class="">
                         <h6 class="pt-2" id="colorName">COLOR/ <small>{{product.color}}</small> </h6>
                         <div class="color-box" id="color-box"></div>
-                        <a href='/cart' type='' class='btn proceed-btn my-5 px-5'>
-                            Add to cart
-                        </a>
+
+                        <button onclick="addToCart('{{product._id}}')" class="btn proceed-btn my-5 px-5">Add to
+                            cart</button>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row border-top border-2">
-            <h1>Specification</h1>
+            <div class="row border-top border-2">
+                <h1>Specification</h1>
+            </div>
         </div>
-    </div>
 </section>
+<script>
+    let mainImage = document.getElementById('main-image')
+    let subImage = document.getElementsByClassName('sub-image')
+    subImage[0].onclick = function () {
+        mainImage.src = subImage[0].src
+    }
+    subImage[1].onclick = function () {
+        mainImage.src = subImage[1].src
+    }
+    subImage[2].onclick = function () {
+        mainImage.src = subImage[2].src
+    }
+</script>

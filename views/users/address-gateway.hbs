@@ -4,7 +4,7 @@
             <div class="row">
 
                 <h1 class="">Select a Delivery Address</h1>
-                {{#if delAddress}}
+                {{#if delAddress.delivaryAddress}}
                 <div class="col-md-8 py-2 border-warning border-top border-2 d-flex justify-content-center ">
                     <div class="col ">
                         <a href="" class="btn btn-warning shadow">Edit Address</a>
@@ -12,7 +12,7 @@
                     </div>
                     <div class="col d-flex  ">
                         <input type="radio" name="Address" value="{{delAddress.delivaryAddress}}" class="form-check-input me-3" required>
-                        <p name="Address"> {{delAddress.delivaryAddress.fname}} {{delAddress.delivaryAddress.lname}}  80898888548 <br>
+                        <p name="Address"> {{delAddress.delivaryAddress.fname}} {{delAddress.delivaryAddress.lname}} {{delAddress.delivaryAddress.mobile }} <br>
                            {{delAddress.delivaryAddress.address}},<br> {{delAddress.delivaryAddress.pincode}} {{delAddress.delivaryAddress.city}}<br> {{delAddress.delivaryAddress.state}} -
                             India</p>
                     </div>
@@ -35,12 +35,12 @@
                             <h6>Total Payable </h6>
                             <h6 class="fw-bold">₹ {{totalValue}} </h6>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
             <div class="row ">
                 <div class="col">
-                    <a href="/new-address " class="btn btn-warning shadow">Add New Address</a>
+                    <a href="/new-address " class="btn btn-warning shadow my-3">Add New Address</a>
                 </div>
             </div>
             <div class="row mt-5">

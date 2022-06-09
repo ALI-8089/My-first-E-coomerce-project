@@ -1,0 +1,45 @@
+<section class="m-1">
+    <div class=" container-md">
+        {{#each allOrders}}
+        <a href="/order-details/{{this._id}}" class="text-decoration-none text-dark">
+            <div class="row d-flex align-items-center  border shadow-sm my-2  p-2">
+               
+                <div class="col-md-5">
+                      {{#each this.products}}
+                    <div class="row py-2 d-flex justify-content-center align-items-center">
+                       
+                        <div class="">
+                            <img src="data:{{this.image.0.contentType}};base64,{{this.image.0.image}}"
+                                style="width: 7rem;" alt="">
+                        </div>
+                        <div class="">
+                            <div>
+                                <h6 class="">{{this.name}}</h6>
+
+                            </div>
+                        </div>
+                       
+                    </div>
+                      {{/each}}
+                </div>
+               
+                <div class="col-md-2">
+                    <h6>₹ {{this.total}}</h6>
+                </div>
+                <div class="col-md-5">
+                    <div class=" rounded-pill d-flex justify-content-center  align-items-center">
+                        <P>status : <small class="text-success"> {{this.status}} </small> <small class="mx-3"> on
+                                {{this.date}}
+                            </small>
+                        </P>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </a>
+        {{/each}}
+
+    </div>
+</section>

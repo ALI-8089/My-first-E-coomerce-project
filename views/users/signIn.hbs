@@ -56,6 +56,11 @@
       <h5 class="text-danger  my-3 ">{{loginErr}}</h5>
     </div>
     {{/if}}
+     {{#if blockedErr}}
+    <div>
+      <h5 class="text-danger  my-3 ">{{blockedErr}}</h5>
+    </div>
+    {{/if}}
       <h4 class="text-center text-light fw-bold">Or</h4>
         <div class='d-flex justify-content-center py-3'>
         <a

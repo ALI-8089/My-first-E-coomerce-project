@@ -13,9 +13,14 @@
                 <label for="exampleInputEmail1" class="form-label">Brand</label>
                 <input name="brand" type="text" class="form-control" />
             </div>
-            <div >
+            <div>
                 <label for="form-label">Type</label>
-                <select name="type" class="input-group form-control" >
+                <div class="d-flex justify-content-end my-1" >
+                    <input type="text" placeholder="Add type" for="type" id="input">
+                    
+                    <button class="mx-1 border-0 p-1 btn-success" type="button" id="add-btn" >Add</button>
+                </div>
+                <select name="type" id="type" class="input-group form-control">
                     <option value="mtb">mtb</option>
                     <option value="hybrid">hybrid</option>
                     <option value="road">road</option>
