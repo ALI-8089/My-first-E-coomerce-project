@@ -12,6 +12,13 @@
   font-size: x-large;
   font-weight: 500;
 }
+.activity{
+  color: rgba(255,255,255,0.55) !important;  
+}
+.activity.active{
+  color: rgb(255, 255, 255) !important;
+  border-bottom: 3px solid #fff;
+}
 .title {
   font-family: 'League Gothic', sans-serif;
   font-size: 70px;
@@ -19,15 +26,17 @@
 .products {
   background-color: #571d65;
 }
-
+/* 
 .button a {
-  position: absolute;
-  top: 45%;
-  left: 40%;
-  color: white;
-  background: black;
+   color: white;
+  background-color: black;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
+*/
+.my-btn:hover{
+color: black;
+background-color: white;
+} 
 
 .signin-modal {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
@@ -114,3 +123,9 @@ label{
   font-family: 'Inter', sans-serif;
 }
 
+.form-check-input:checked {
+  background-color: #587c22 !important;
+} 
+.disable-div {
+  pointer-events: none;
+}

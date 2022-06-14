@@ -8,8 +8,10 @@ const usersRouter = require('./routes/user')
 const hbs = require('express-handlebars')
 const app = express()
 const db = require('./config mongo/mongo-connection')
+const nocache = require("nocache");
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
+require('dotenv').config()
 // const fileUpload = require('express-fileupload')
 const cors = require('cors')
 app.use(
@@ -35,6 +37,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(nocache());
 app.use(
   session({
     secret: 'token',

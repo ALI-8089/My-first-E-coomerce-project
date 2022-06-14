@@ -3,11 +3,11 @@
         {{#each allOrders}}
         <a href="/order-details/{{this._id}}" class="text-decoration-none text-dark">
             <div class="row d-flex align-items-center  border shadow-sm my-2  p-2">
-               
+
                 <div class="col-md-5">
-                      {{#each this.products}}
+                    {{#each this.products}}
                     <div class="row py-2 d-flex justify-content-center align-items-center">
-                       
+
                         <div class="">
                             <img src="data:{{this.image.0.contentType}};base64,{{this.image.0.image}}"
                                 style="width: 7rem;" alt="">
@@ -18,11 +18,11 @@
 
                             </div>
                         </div>
-                       
+
                     </div>
-                      {{/each}}
+                    {{/each}}
                 </div>
-               
+
                 <div class="col-md-2">
                     <h6>₹ {{this.total}}</h6>
                 </div>

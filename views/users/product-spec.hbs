@@ -28,6 +28,7 @@
 
 
 
+
             </div>
             <div class="col-9 col-md-7 d-flex align-items-center position-relative">
                 <img src="data:{{product.image.0.contentType}};base64,{{product.image.0.image}}" class="img-fluid"
@@ -49,8 +50,7 @@
                     <h6 class="py-2">Model <span> {{product.model}}</span></h6>
                     <div class="">
                         <h6 class="pt-2" id="colorName">COLOR/ <small>{{product.color}}</small> </h6>
-                        <div class="color-box" id="color-box"></div>
-
+                       
                         <button onclick="addToCart('{{product._id}}')" class="btn proceed-btn my-5 px-5">Add to
                             cart</button>
                     </div>

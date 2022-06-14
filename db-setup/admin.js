@@ -1,8 +1,30 @@
 var db = require('../config mongo/mongo-connection')
 const collection = require('../config mongo/mongo-collections')
 const { ObjectId } = require('mongodb')
+const bcrypt = require('bcrypt')
 const async = require('hbs/lib/async')
 module.exports = {
+  doLogin: (data) => {
+    return new Promise(async (resolve, reject) => {
+      let response = {}
+      let admin = await db
+        .get()
+        .collection(collection.adminCollection)
+        .findOne({ email: data.email })
+      if (admin) {
+        bcrypt.compare(data.password, admin.password).then((status) => {
+          if (status) {
+            response.status = true
+            resolve({ status: true })
+          } else {
+            resolve({ status: false })
+          }
+        })
+      } else {
+        resolve({ status: false })
+      }
+    })
+  },
   addProduct: (image, product) => {
     // console.log(product)
     let basicDetails = {
@@ -15,7 +37,7 @@ module.exports = {
       model: product.model,
       color: product.color,
       image: image,
-      spec: [ 
+      spec: [
         {
           frame: product.frame,
           shock: product.shock,
@@ -223,8 +245,119 @@ module.exports = {
           },
         ])
         .toArray()
-     
+
       resolve(allOrders)
+    })
+  },
+  coupen: (data) => {
+    let coupenObj = {
+      type: 'coupen',
+      name: data.name.toUpperCase(),
+      discount: parseInt(data.discount),
+    }
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.adminCollection)
+        .insertOne(coupenObj)
+        .then(() => {
+          resolve()
+        })
+    })
+  },
+  getCoupen: () => {
+    return new Promise(async (resolve, reject) => {
+      let coupen = await db
+        .get()
+        .collection(collection.adminCollection)
+        .find({ type: 'coupen' })
+        .toArray()
+
+      resolve(coupen)
+    })
+  },
+  coupenDelete: (coupenId) => {
+    console.log(coupenId)
+    return new Promise(async (resolve, reject) => {
+      let coupenDelete = await db
+        .get()
+        .collection(collection.adminCollection)
+        .deleteOne({ _id: ObjectId(coupenId.coupenId) })
+      resolve(coupenDelete)
+    })
+  },
+  revenue: () => {
+    return new Promise(async (resolve, reject) => {
+      let revenue = await db
+        .get()
+        .collection(collection.orderCollection)
+        .aggregate([
+          {
+            $match: { status: 'placed' },
+          },
+          {
+            $group: {
+              _id: null,
+              revenue: { $sum: '$total' },
+            },
+          },
+        ])
+        .toArray()
+
+      resolve(revenue)
+    })
+  },
+  orders: () => {
+    return new Promise(async (resolve, reject) => {
+      let orders = await db.get().collection(collection.orderCollection).count()
+
+      resolve(orders)
+    })
+  },
+  users: () => {
+    return new Promise(async (resolve, reject) => {
+      let users = await db.get().collection(collection.userCollection).count()
+
+      resolve(users)
+    })
+  },
+
+  getRevenue: () => {
+    return new Promise(async (resolve, reject) => {
+      let revenue = await db
+        .get()
+        .collection(collection.orderCollection)
+        .aggregate([
+          {
+            $match: { status: 'placed' },
+          },
+          {
+            $project: {
+              date: 1,
+              total: 1,
+              _id: 0,
+            },
+          },
+        ])
+        .toArray()
+      console.log(revenue)
+
+      let arrRevenue = []
+      let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      for (i in months) {
+        console.log(months[i])
+        let oneRevenue = 0
+        for (j of revenue) {
+          console.log('dddd', j.date)
+          let oneMonth = new Date(parseInt(j.date)).getHours()
+          console.log(oneMonth)
+          if (oneMonth === months[i]) {
+            oneRevenue = oneRevenue + j.total
+          }
+        }
+        arrRevenue.push(oneRevenue)
+        console.log(arrRevenue)
+      }
+      resolve(arrRevenue)
     })
   },
 }

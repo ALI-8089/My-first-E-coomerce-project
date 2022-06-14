@@ -1,11 +1,11 @@
 <header>
   <nav class='navbar navbar-expand-lg navbar-dark' style='background-color: #571d65'>
     <div class='container-fluid'>
-      <a class='navbar-brand logo' href='/'>
-        <img class="img-fluid" src='/images/logo.png' alt='' />
+      <a class='navbar-brand logo ' href='/'>
+        <img src='/images/logo.png' alt='' class="img-fluid" />
       </a>
-      <a class='navbar-brand me-auto' href='/'>
-        <img class="img-fluid" src='/images/CycMaster.png' alt='' />
+      <a class='navbar-brand me-auto d-none d-md-block' href='/'>
+        <img src='/images/CycMaster.png' alt='' class="img-fluid" />
       </a>
       {{#if cart}}
       {{else}}
@@ -13,42 +13,44 @@
       <div class='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul class='navbar-nav me-auto ms-auto mb-2 mb-lg-0 ms-5 text-center'>
           <li class='nav-item'>
-            <a class='nav-link active ps-5 pe-5' aria-current='page' href='/'>
+            <a class='nav-link  ps-5 pe-5 activity ' aria-current='page' href='/'>
               Home
             </a>
           </li>
           <li class='nav-item'>
-            <a class='nav-link pe-5 ps-5' href='/mountain-bike'>
+            <a class='nav-link pe-5 ps-5 activity' href='/mountain-bike'>
               Mountian
             </a>
           </li>
           <li class='nav-item'>
-            <a class='nav-link pe-5 ps-5' href='/hybrid-bike'>
+            <a class='nav-link pe-5 ps-5 activity' href='/hybrid-bike'>
               Hybrid
             </a>
           </li>
           <li class='nav-item'>
-            <a class='nav-link pe-5 ps-5' href='/road-bike'>
+            <a class='nav-link pe-5 ps-5 activity' href='/road-bike'>
               Road
             </a>
           </li>
           <li class='nav-item'>
-            <a class='nav-link pe-5 ps-5' href='/gravel-bike'>
+            <a class='nav-link pe-5 ps-5 activity' href='/gravel-bike'>
               Gravel
             </a>
           </li>
         </ul>
-        <form class='d-flex ms-auto mx-3  ' action="/search" method="post">
-          <div class="position-relative">
+        <form class='ms-auto' action="/search" method="post">
+          <div class="position-relative ">
             <input class='form-control me-2 ' name="search" type='search' placeholder='Search' aria-label='Search' />
-            <button type="submit" class="position-absolute border-0 bg-transparent"
-              style="right: 0rem; top: 0rem;"></button>
+
           </div>
 
         </form>
       </div>
       <div class='position-relative'>
-        <a href="/cart"><i class='bi bi-cart3 px-3 text-white  display-6 '> </i>
+        <a href="/cart">
+
+          <i class='bi bi-cart3 px-3 text-white  display-6 '> </i>
+
           {{#if user}}
           <span class="position-absolute top-0  start-100 bg-warning text-dark  translate-middle badge rounded-pill "
             id="cart-count">
@@ -63,28 +65,32 @@
       <div class='dropdown mx-1'>
         <a class='btn dropdown-toggle text-white' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown'
           aria-expanded='false'>
+          {{#if user}}
+          <span>{{user.fname}}</span>
+          {{else}}
           <img src='/images/ic_sharp-account-circle.png' alt='' />
+          {{/if}}
         </a>
 
         <ul class='dropdown-menu  dropdown-menu-end' aria-labelledby='dropdownMenuLink'>
           <li>
-            <a class='dropdown-item fw-bold' href='/profile'>
+            <a class='dropdown-item fw-bold ' href='/profile'>
               Profile
             </a>
           </li>
           <li>
-            <a class='dropdown-item fw-bold' href='/orders'>
+            <a class='dropdown-item fw-bold ' href='/orders'>
               All Orders
             </a>
           </li>
           <li>
             {{#if user}}
-            <a class='dropdown-item fw-bold' href='/logout' {{!-- data-bs-toggle='modal' data-bs-target='#login-modal'
+            <a class='dropdown-item fw-bold ' href='/logout' {{!-- data-bs-toggle='modal' data-bs-target='#login-modal'
               --}}>
               Logout
             </a>
             {{else}}
-            <a class='dropdown-item fw-bold' href='/login' {{!-- data-bs-toggle='modal' data-bs-target='#login-modal'
+            <a class='dropdown-item fw-bold ' href='/login' {{!-- data-bs-toggle='modal' data-bs-target='#login-modal'
               --}}>
               Login
             </a>
@@ -92,10 +98,13 @@
           </li>
         </ul>
       </div>
-      <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent'
+      {{#if cart}}
+      {{else}}
+      <button class='navbar-toggler ' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent'
         aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
         <span class='navbar-toggler-icon'></span>
       </button>
+      {{/if}}
     </div>
   </nav>
 </header>

@@ -9,46 +9,18 @@
 <section class='products'>
   <div class='container-fluid'>
     <div class='row gy-4'>
+      {{#each home}}
       <div class='col-12 col-md-6'>
         <div class='card'>
-          <img src='/images/home/home mtb.jpg' class='card-img image-fluid' />
-          <div class='card-img-overlay button'>
-            <a href='mountain-bike' class='btn  fw-bold  btn-lg '>
-            MOUNTAIN BIKE
+          <img src='{{this.image}}' class='card-img image-fluid' />
+          <div class='card-img-overlay  d-flex justify-content-center align-items-center button'>
+            <a href={{this.link}} class='btn btn-outline-light fw-bold my-btn btn-lg '>
+            {{this.button}}
             </a>
           </div>
         </div>
       </div>
-      <div class='col-12 col-md-6'>
-        <div class='card'>
-          <img src='/images/home/home hybrid.jpg' class='card-img-top' />
-          <div class='card-img-overlay button'>
-            <a href='/hybrid-bike' class='btn  fw-bold btn-lg'>
-              HYBRID BIKE
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class='col-12 col-md-6'>
-        <div class='card'>
-          <img src='/images/home/home road.jpg' class='card-img-top' />
-          <div class='card-img-overlay button'>
-            <a href='/road-bike' class='btn  fw-bold btn-lg '>
-              ROAD BKIE
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class='col-12 col-md-6'>
-        <div class='card'>
-          <img src='/images/home/home gravel.jpg' class='card-img-top' />
-          <div class='card-img-overlay button'>
-            <a href='/gravel-bike' class='btn  fw-bold btn-lg'>
-            GRAVEL BIKE
-            </a>
-          </div>
-        </div>
-      </div>
+      {{/each}}
     </div>
   </div>
 </section>

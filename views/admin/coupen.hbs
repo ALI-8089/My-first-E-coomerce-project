@@ -1,0 +1,39 @@
+<section>
+    <div class="container">
+        <div class="row d-flex  justify-content-between" id="coupen">
+            <div class="col">
+                <form action="/admin/coupen" style="width: 30rem;"
+                    class="border my-5 border-dark rounded p-3 shadow bg-warning" method="post">
+                    <h4 class="text-center text-white">Create Voucher</h4>
+                    <h6 style="font-size: 15px;">coupens are showed in user checkout </h6>
+                    <div class="my-3 border-top py-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Discount in percentage</label>
+                        <input type="nunber" name="discount" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-dark fw-bold">Submit</button>
+                </form>
+            </div>
+            <div class="col my-5 ">
+                {{#each coupen}}
+                <div class="row my-2 border border-dark rounded p-3 shadow-sm ">
+                    <div class="col d-flex justify-content-between align-items-center">
+                        <h1 class="mx-2">VOUCHER <strong
+                                class="text-success fw-normal ps-3">{{this.name}}{{this.discount}}</strong>
+                        </h1>
+
+                        <button class="border-0 bg-transparent" onclick="coupenDelete('{{this._id}}')"> <img
+                                src="/images/clarity_remove-solid.png">
+                        </button>
+
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <h4 class="text-warning">Please add one Coupen at a time</h4>
+        </div>
+    </div>
+</section>

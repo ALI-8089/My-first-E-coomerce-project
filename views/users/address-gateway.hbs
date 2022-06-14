@@ -4,50 +4,81 @@
             <div class="row">
 
                 <h1 class="">Select a Delivery Address</h1>
-                {{#if delAddress.delivaryAddress}}
-                <div class="col-md-8 py-2 border-warning border-top border-2 d-flex justify-content-center ">
-                    <div class="col ">
-                        <a href="" class="btn btn-warning shadow">Edit Address</a>
 
+                <div class="col-md-7 py-2 border-warning border-top border-2  ">
+                    <div class=" row m-3">
+                        {{#if Address}}
+
+                        {{#each Address}}
+                        <div class="col-1">
+                            <a href="/edit-address/{{this._id}}" class="shadow "><img src="/images/edit.png" alt=""
+                                    style="width: 1.5rem;">
+
+                            </a>
+                        </div>
+                        <div class="col-1">
+                            <input type="radio" name="Address" class="form-check-input me-3" required>
+                        </div>
+                        <div class="col-10">
+                            <p name="Address"> {{this.fname}} {{this.lname}}
+
+                                {{this.address}},<br> {{this.mobile }} <br> {{this.pincode}}<br>
+                                {{this.city}} {{this.state}} -
+                                India
+                            </p>
+                        </div>
+
+                        {{/each}}
+
+
+                        {{else}}
+                        <div class="col-12">
+                            <h5 class="my-5 text-danger ">Please add address!</h5>
+                        </div>
+                        {{/if}}
                     </div>
-                    <div class="col d-flex  ">
-                        <input type="radio" name="Address" value="{{delAddress.delivaryAddress}}" class="form-check-input me-3" required>
-                        <p name="Address"> {{delAddress.delivaryAddress.fname}} {{delAddress.delivaryAddress.lname}} {{delAddress.delivaryAddress.mobile }} <br>
-                           {{delAddress.delivaryAddress.address}},<br> {{delAddress.delivaryAddress.pincode}} {{delAddress.delivaryAddress.city}}<br> {{delAddress.delivaryAddress.state}} -
-                            India</p>
-                    </div>
-                   
 
                 </div>
-                {{/if}}
-                <div class="col-md-4  ">
+                <div class="col-md-5  ">
                     <div class="shadow  p-3">
                         <h5 class=" border-bottom p-2 fw-bold text-secondary"> PRICE DETAILS</h5>
                         <div class="d-flex justify-content-between p-2">
-                            <h6>Price (3 items)</h6>
+                            <h6>Price ({{cartCount}} items)</h6>
                             <h6>₹ {{totalValue}}</h6>
                         </div>
                         <div class="d-flex justify-content-between p-2">
                             <h6>Delivery Charge </h6>
                             <h6 class="text-success">FREE</h6>
                         </div>
+                        {{!-- *********** --}}
+
+                        <div class=" d-flex justify-content-between p-2" id="couopen-div">
+                            <label class="text-success" for="">You got {{coupen.name}}{{coupen.discount}}% dicount
+                                Coupen </label>
+                            <button class="btn btn-sm btn-success"
+                                onclick="coupen('{{totalValue}}','{{coupen.discount}}','{{coupen._id}}')"
+                                id="{{coupen._id}}" type="button">Apply</button>
+                        </div>
+
+                        {{!-- *********** --}}
                         <div class="d-flex justify-content-between border-top border-bottom p-2">
                             <h6>Total Payable </h6>
-                            <h6 class="fw-bold">₹ {{totalValue}} </h6>
+                            <h6 class="fw-bold" id="coupen-price">₹ {{totalValue}} </h6>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
             <div class="row ">
                 <div class="col">
-                    <a href="/new-address " class="btn btn-warning shadow my-3">Add New Address</a>
+                    <a href="/create-address " class="btn btn-warning shadow my-3">Add New Address</a>
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <h1 class="py-2 border-warning border-bottom border-2">Select a Payment Method</h1>
 
-                    <div class="col d-flex justify-content-start ">
+
+                    <div class="col d-flex justify-content-center ">
                         <div class=" d-flex flex-column  align-items-center ">
                             <label class="bg-info shadow m-3 p-1">Net Banking</label>
                             <input type="radio" name="payment-method" value="ONLINE" class="form-check-input" checked>
@@ -55,30 +86,34 @@
                         <div class=" d-flex flex-column  align-items-center">
                             <label class="bg-info shadow m-3 p-1">Cash On Delivery</label>
                             <input type="radio" name="payment-method" value="COD" class="form-check-input">
-                        
+
                         </div>
 
                     </div>
+
                 </div>
-              
+                {{#if Address}}
                 <div class="text-center  mt-5 ">
                     <button type="submit" class="btn text-white fw-bold" style='background-color: #571d65;'>
                         Checkout
                     </button>
                 </div>
+
+                {{/if}}
             </div>
 
         </form>
         <!-- Button trigger modal -->
- 
+
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content " >
-                    <div class="modal-header"  style='background-color: #571d65'>
-                        <h1 class="modal-title text-light"  id="exampleModalLabel">CycMaster</h1>
-                        <button type="button" id="close-btn" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-content ">
+                    <div class="modal-header" style='background-color: #571d65'>
+                        <h1 class="modal-title text-light" id="exampleModalLabel">CycMaster</h1>
+                        <button type="button" id="close-btn" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                     </div>
                     <div class="modal-body  ">
                         <div class="d-flex flex-column justify-content-center align-items-center">

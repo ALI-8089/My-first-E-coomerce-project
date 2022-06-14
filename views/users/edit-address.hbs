@@ -1,0 +1,74 @@
+<section class="m-5">
+    <div class="container shadow p-5">
+        <form action="/edit-address/{{address._id}}" method="post">
+            <div class="row border-bottom border-warning pb-3">
+                <h1 class="border-bottom border-warning pb-3">Delivery Address</h1>
+                <div class="col-md-4 ">
+                    <h4>Personal Details</h4>
+                    <div class="m-3">
+                        <label class="form-label">First Name</label>
+                        <input name="fname" type="text" value="{{address.fname}}" required class="form-control" placeholder="Enter First Name" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">Last Name</label>
+                        <input name="lname" type="text"  value="{{address.lname}}" required class="form-control" placeholder="Enter Last Name" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="row my-3">
+                <h4>Shipping Details</h4>
+                <div class="col-md-6">
+
+                    <div class="m-3">
+                        <label class="form-label">Phone Number</label>
+                        <input name="mobile" type="text"  value="{{address.mobile}}" required class="form-control" placeholder="Enter Phone Number" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">Pin Code</label>
+                        <input name="pincode" type="text"  value="{{address.pincode}}" required class="form-control" placeholder="Enter Pin Code" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">Address</label>
+                        <input name="address" type="text"  value="{{address.address}}" required class="form-control" placeholder="Enter Address" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">Locality</label>
+                        <input name="locality" type="text" value="{{address.locality}}" required class="form-control" placeholder="Enter Locality" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="m-3">
+                        <label class="form-label">City</label>
+                        <input name="city" type="text"  value="{{address.city}}" required class="form-control" placeholder="Enter City" />
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label">State</label>
+                        <input name="state" type="text"  value="{{address.state}}" required class="form-control" placeholder="Enter State" />
+                    </div>
+                    <h4>Address Type</h4>
+                    <div class=" d-flex justify-content-start">
+                        <div class="m-3 d-flex flex-column align-items-center">
+                            <h6>work</h6>
+                            <input type="radio" name="addressType" value="WORK" class="form-check-input" required>
+                        </div>
+                        <div class="m-3 d-flex flex-column align-items-center">
+                            <h6>Home</h6>
+                            <input type="radio" name="addressType" value="HOME" class="form-check-input" required>
+                        </div>
+                        <div class="m-3 d-flex flex-column align-items-center">
+                            <h6>Other</h6>
+                            <input type="radio" name="addressType" value="other" class="form-check-input" required>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-5 text-center">
+                    <button  type='submit' class='btn btn-warning fw-bold px-5'>
+                       Save
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

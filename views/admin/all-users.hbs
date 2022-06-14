@@ -8,10 +8,8 @@
                     <th scope="col">Last Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Gender</th>
-                       <th scope="col">Orders</th>
+                    <th scope="col">Orders</th>
                     <th scope="col">Opration</th>
-
-
                 </tr>
             </thead>
             <tbody>
@@ -22,10 +20,10 @@
                     <td>{{this.lname}}</td>
                     <td>{{this.email}}</td>
                     <td>{{this.gender}}</td>
-                    <td> <a href="/admin/user-orders/{{this._id}}"><img src="/images/delete.png" style="width: 2.5rem;"></a></td>
+                    <td> <a href="/admin/user-orders/{{this._id}}"><img src="/images/delete.png"
+                                style="width: 2.5rem;"></a></td>
                     <td>
                         {{#if this.blocked}}
-
                         <a href="/admin/unblock-user/{{this._id}}" id="block-btn" class="btn btn-danger m-1">UNBLOCK</a>
                         {{else}}
                         <a href="/admin/block-user/{{this._id}}" id="block-btn"
@@ -35,7 +33,6 @@
                     </td>
                 </tr>
                 {{/each}}
-
             </tbody>
         </table>
     </div>

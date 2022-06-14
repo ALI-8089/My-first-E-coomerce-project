@@ -2,9 +2,8 @@ const collection = require('../config mongo/mongo-collections')
 const db = require('../config mongo/mongo-connection')
 const bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb')
+require('dotenv').config()
 const Razorpay = require('razorpay')
-
-
 
 module.exports = {
   DoSignup: (data) => {
@@ -18,9 +17,15 @@ module.exports = {
         resolve({ status: true })
       } else {
         data.password = await bcrypt.hash(data.password, 10)
+        let nData = {
+          fname: data.fname.toUpperCase(),
+          lname: data.lname,
+          email: data.email,
+          password: data.password,
+        }
         db.get()
           .collection(collection.userCollection)
-          .insertOne(data)
+          .insertOne(nData)
           .then((response) => {
             console.log(response)
             resolve({ status: false })
@@ -57,17 +62,18 @@ module.exports = {
   search: (key) => {
     return new Promise(async (resolve, reject) => {
       let products = await db
-        .get() 
+        .get()
         .collection(collection.productCollection)
         .find({
-          $or:[
-            {name:{$regex:key.search ,'$options' : 'i'}},
-            {brand:{$regex:key.search ,'$options' : 'i'}},
-            {type:{$regex:key.search ,'$options' : 'i'}},
-          ]
-        }).toArray()
-        console.log(products);
-        resolve(products)
+          $or: [
+            { name: { $regex: key.search, $options: 'i' } },
+            { brand: { $regex: key.search, $options: 'i' } },
+            { type: { $regex: key.search, $options: 'i' } },
+          ],
+        })
+        .toArray()
+      console.log(products)
+      resolve(products)
     })
   },
   getproducts: (data) => {
@@ -88,14 +94,26 @@ module.exports = {
         .get()
         .collection(collection.productCollection)
         .findOne({ _id: ObjectId(proId) })
-           resolve(product)
+      resolve(product)
     })
   },
 
   addToCart: (proId, userId) => {
+    let d = new Date()
+    let time =
+      ('0' + d.getDate()).slice(-2) +
+      '-' +
+      ('0' + (d.getMonth() + 1)).slice(-2) +
+      '-' +
+      d.getFullYear() +
+      ' ' +
+      ('0' + d.getHours()).slice(-2) +
+      ':' +
+      ('0' + d.getMinutes()).slice(-2)
     let proObj = {
       items: ObjectId(proId),
       quantity: 1,
+      date: time,
     }
     return new Promise(async (resolve, reject) => {
       let userCart = await db
@@ -107,7 +125,7 @@ module.exports = {
         let proExist = userCart.product.findIndex(
           (product) => product.items == proId,
         )
-        console.log(proExist)
+
         if (proExist != -1) {
           db.get()
             .collection(collection.cartCollection)
@@ -159,10 +177,12 @@ module.exports = {
           {
             $unwind: '$product',
           },
+
           {
             $project: {
               items: '$product.items',
               quantity: '$product.quantity',
+              date: '$product.date',
             },
           },
           {
@@ -175,14 +195,15 @@ module.exports = {
           },
           {
             $project: {
+              date: 1,
               items: 1,
               quantity: 1,
               products: { $arrayElemAt: ['$products', 0] },
             },
           },
+          { $sort: { date: -1 } },
         ])
         .toArray()
-      console.log(cartItems)
       resolve(cartItems)
     })
   },
@@ -200,7 +221,6 @@ module.exports = {
     })
   },
   changeProductQuantity: (details) => {
-    // console.log(details);
     details.count = parseInt(details.count)
     return new Promise((resolve, reject) => {
       if (details.count == -1 && details.quantity == 1) {
@@ -213,7 +233,6 @@ module.exports = {
             },
           )
           .then((response) => {
-            // console.log(response);
             resolve({ removeProduct: true })
           })
       } else {
@@ -229,7 +248,6 @@ module.exports = {
             },
           )
           .then((response) => {
-            // console.log(response);
             resolve({ status: true })
           })
       }
@@ -247,7 +265,6 @@ module.exports = {
           },
         )
         .then((response) => {
-          // console.log(response);
           resolve({ removeProduct: true })
         })
     })
@@ -297,25 +314,31 @@ module.exports = {
       resolve(total[0].total)
     })
   },
-  palceOrder: (order, products, total, userId) => {
-    let d= new Date()
-    let time = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-    d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+  palceOrder: (order, products, total, userId, Applied) => {
+    console.log(order)
+    let d = new Date()
+    let time =
+      ('0' + d.getDate()).slice(-2) +
+      '-' +
+      ('0' + (d.getMonth() + 1)).slice(-2) +
+      '-' +
+      d.getFullYear() +
+      ' ' +
+      ('0' + d.getHours()).slice(-2) +
+      ':' +
+      ('0' + d.getMinutes()).slice(-2)
 
     return new Promise((resolve, reject) => {
-      let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
+      let status = order['payment-method'] === 'COD' ? 'placed' : 'cancelled'
       let oderObj = {
-        deliveryDetails: {
-          mobile: order.mobile,
-          address: order.address,
-          pincode: order.pincode,
-        },
+        AddIndex: parseInt(order.Address),
         userId: ObjectId(userId),
         paymentMethod: order['payment-method'],
         products: products,
         status: status,
         total: total,
         date: time,
+        coupen: Applied,
       }
       db.get()
         .collection(collection.orderCollection)
@@ -365,9 +388,11 @@ module.exports = {
               as: 'products',
             },
           },
+
+          { $sort: { date: -1 } },
         ])
         .toArray()
-      
+
       resolve(orders)
     })
   },
@@ -386,6 +411,10 @@ module.exports = {
           },
           {
             $project: {
+              AddIndex: 1,
+              userId: 1,
+              coupen: 1,
+              paymentMethod: 1,
               status: 1,
               total: 1,
               date: 1,
@@ -401,15 +430,21 @@ module.exports = {
               as: 'product',
             },
           },
-          
+          {
+            $lookup: {
+              from: collection.userCollection,
+              localField: 'userId',
+              foreignField: '_id',
+              as: 'user',
+            },
+          },
         ])
         .toArray()
-      
 
       resolve(orderItems)
     })
   },
-  getUserOrdersWithProduct: (userId, proId) => { 
+  getUserOrdersWithProduct: (userId, proId) => {
     return new Promise(async (resolve, reject) => {
       console.log(userId, proId)
       let orders = await db
@@ -427,8 +462,8 @@ module.exports = {
   generateRazorpay: (orderId, total) => {
     return new Promise((resolve, reject) => {
       var instance = new Razorpay({
-        key_id: 'rzp_test_AOR6LcLadTlBtS',
-        key_secret: 'P7pl9FbDIpQUQSjlsQFZaxZQ',
+        key_id: process.env.KEY_ID,
+        key_secret: process.env.KEY_SECRET,
       })
 
       let order = instance.orders.create({
@@ -436,7 +471,7 @@ module.exports = {
         currency: 'INR',
         receipt: '' + orderId,
       })
-      console.log('1', order)
+
       resolve(order)
     })
   },
@@ -490,7 +525,7 @@ module.exports = {
         .get()
         .collection(collection.userCollection)
         .findOne({ _id: ObjectId(userId) })
-      console.log(profile)
+
       resolve(profile)
     })
   },
@@ -509,38 +544,116 @@ module.exports = {
             },
           },
         )
-        .then(() => { 
+        .then(() => {
           resolve()
         })
     })
   },
   createAddress: (userId, data) => {
-    return new Promise((resolve, reject) => {
-      deliveryAddress = {
-        fname: data.fname,
-        lname: data.lname,
-        mobile: data.mobile,
-        pincode: data.pincode,
-        address: data.address,
-        locality: data.locality,
-        city: data.city,
-        state: data.state,
-        addressType: data.addressType,
-      }
+    deliveryAddress = {
+      _id: ObjectId(),
+      fname: data.fname,
+      lname: data.lname,
+      mobile: data.mobile,
+      pincode: data.pincode,
+      address: data.address,
+      locality: data.locality,
+      city: data.city,
+      state: data.state,
+      addressType: data.addressType,
+    }
 
+    return new Promise(async (resolve, reject) => {
       db.get()
         .collection(collection.userCollection)
         .updateOne(
           { _id: ObjectId(userId) },
           {
-            $set: { delivaryAddress: deliveryAddress },
+            $push: { delivaryAddress: deliveryAddress },
           },
-          { upsert: true },
         )
         .then((comfirm) => {
           console.log(comfirm)
           resolve()
         })
+    })
+  },
+  findAddress: (userId, Id) => {
+    return new Promise(async (resolve, reject) => {
+      let address = await db
+        .get()
+        .collection(collection.userCollection)
+        .aggregate([
+          {
+            $unwind: '$delivaryAddress',
+          },
+          {
+            $match: { 'delivaryAddress._id': ObjectId(Id) },
+          },
+          {
+            $project: {
+              delivaryAddress: 1,
+              _id: 0,
+            },
+          },
+        ])
+        .toArray()
+
+      resolve(address[0].delivaryAddress)
+    })
+  },
+  editAddress: (userId, Id, address) => {
+    let Newaddress = {
+      _id: ObjectId(),
+      fname: address.fname,
+      lname: address.lname,
+      mobile: address.mobile,
+      pincode: address.pincode,
+      address: address.address,
+      locality: address.locality,
+      city: address.city,
+      state: address.state,
+      addressType: address.addressType,
+    }
+    return new Promise(async (resolve, reject) => {
+      db.get()
+        .collection(collection.userCollection)
+        .updateOne(
+          { _id: ObjectId(userId), 'delivaryAddress._id': ObjectId(Id) },
+          {
+            $set: { 'delivaryAddress.$': Newaddress },
+          },
+        )
+        .then((response) => {
+          resolve()
+        })
+    })
+  },
+  deleteAddress: (Id, userId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.userCollection)
+        .updateOne(
+          { _id: ObjectId(userId) },
+
+          {
+            $pull: { delivaryAddress: { _id: ObjectId(Id) } },
+          },
+        )
+        .then((response) => {
+          resolve()
+        })
+    })
+  },
+  getCoupen: () => {
+    return new Promise(async (resolve, reject) => {
+      let coupens = await db
+        .get()
+
+        .collection(collection.adminCollection)
+        .findOne({ type: 'coupen' })
+      console.log(coupens)
+      resolve(coupens)
     })
   },
 }

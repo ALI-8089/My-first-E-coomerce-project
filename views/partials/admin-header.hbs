@@ -6,7 +6,7 @@
         <img src='/images/CycMaster.png' class='img-fluid' alt='' />
       </a>
 
-      <a class='navbar-brand' href='/'>
+      <a class='navbar-brand' href='/admin/'>
         <h1>
           Admin
         </h1>
@@ -15,31 +15,42 @@
       <div class='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul class='navbar-nav me-auto ms-auto mb-2 mb-lg-0 ms-5 text-center'>
           <li class='nav-item'>
-            <a class='nav-link active ps-5 pe-5' aria-current='page' href='/admin/all-products'>
-              Home
+            <a class='nav-link activity ps-5 pe-5' aria-current='page' href='/admin/dashboard'>
+              Dashborard
             </a>
           </li>
           <li class='nav-item'>
-            <a class='nav-link pe-5 ps-5' href='/admin/all-users'>
-            
+            <a class='nav-link pe-5 ps-5 activity' href='/admin/all-products'>
+
+              All Products
+            </a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link pe-5 ps-5 activity' href='/admin/all-users'>
+
               All Users
             </a>
           </li>
           <li class='nav-item'>
-            <a class='nav-link pe-5 ps-5' href='/admin/all-orders'>
-             All Orders
+            <a class='nav-link pe-5 ps-5 activity' href='/admin/all-orders'>
+              All Orders
+            </a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link pe-5 ps-5 activity' href='/admin/coupen'>
+              Coupens
+            </a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link pe-5 ps-5 activity' href='/admin/logout'>
+              Logout
             </a>
           </li>
         </ul>
-       
+
       </div>
 
-      <div class='dropdown mx-3'>
-        <a class='btn dropdown-toggle' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown'
-          aria-expanded='false'>
-          <img src='/images/ic_sharp-account-circle.png' alt='' />
-        </a>
-
+      <div>
         <ul class='dropdown-menu  dropdown-menu-end' aria-labelledby='dropdownMenuLink'>
           <li>
             <a class='dropdown-item fw-bold' href='/admin/all-users'>

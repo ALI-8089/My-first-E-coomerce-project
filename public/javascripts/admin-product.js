@@ -1,3 +1,11 @@
+const activePage =window.location.pathname
+console.log(window.location.pathname);
+const navLinks = document.querySelectorAll('.activity').forEach(link =>{
+  if(link.href.includes(`${activePage}`)){
+    link.classList.add('active')
+  }
+})
+
 $('#product-spec').hide()
 
 $('#dis-ena-btn').click(function () {
@@ -24,6 +32,7 @@ function addToCart(proId) {
     method: 'get',
     success: (response) => {
       if (response.login) {
+        alert('Product added cart')
         let count = $('#cart-count').html()
         count = parseInt(count) + 1
         $('#cart-count').html(count)
@@ -38,7 +47,7 @@ function changeQuantity(cartId, proId, userId, count) {
   let quantity = parseInt(document.getElementById(proId).innerHTML)
   count = parseInt(count)
   if (count == -1 && quantity == 1) {
-    if (confirm('r u want to deleter product')) {
+    if (confirm('Are you sure you want to remove this item?')) {
       $.ajax({
         url: '/change-product-quantity',
         data: {
@@ -83,7 +92,7 @@ function changeQuantity(cartId, proId, userId, count) {
 }
 
 function deleteCartProduct(cartId, proId) {
-  if (confirm('r u want to delete')) {
+  if (confirm('Are you sure you want to remove this item?')) {
     $.ajax({
       url: '/delete-cart-product',
       data: {
@@ -119,13 +128,13 @@ $('#checkout-form').submit((e) => {
           }
         })
       }
-    },
+    }, 
   })
 })
-
-function razorpayPayment(order) {
+ 
+function razorpayPayment(order) {  
   var options = {
-    key: 'rzp_test_AOR6LcLadTlBtS', // Enter the Key ID generated from the Dashboard
+    key:'rzp_test_AOR6LcLadTlBtS', // Enter the Key ID generated from the Dashboard
     amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     currency: 'INR',
     name: 'CycMaster',
@@ -142,20 +151,26 @@ function razorpayPayment(order) {
       contact: '9999999999',
     },
     notes: {
-      address: 'Razorpay Corporate Office',
+      address: 'Razorpay Corporate Office', 
     },
     theme: {
       color: '#3399cc',
     },
   }
   var rzp1 = new Razorpay(options)
+  rzp1.on('payment.failed',(response) => { 
+    
+    alert("payment failed") 
+    location.href='/orders'
+  })
+ 
   rzp1.open()
 }
 function verifyPayment(payment, order) {
   $.ajax({
     url: '/verify-payment',
     data: {
-      payment,
+      payment, 
       order,
     },
     method: 'POST',
@@ -172,7 +187,7 @@ function verifyPayment(payment, order) {
   })
 }
 // ******************admin*************
-
+ 
 $(document).ready(function () {
   $('#table_id').DataTable()
 })
@@ -183,20 +198,72 @@ $(document).ready(function () {
     $('#type').append(new Option(value), value)
   })
 })
-// function blockUser(userId){
-// $.ajax({
-// url:'/admin/block-user',
-// data:{
-//   userId:userId
-// },
-// method:'post',
-// success:(response) => {
-//   alert("hi")
-//   if(response){
-//     $('#block-btn').html("Blocked")
+function coupen(total, discount, coupenId) {
+  
+  $.ajax({
+    url: '/coupen',
+    data: {
+      total: total,
+      discount: discount,
+      coupenId: coupenId,
+    },
+    method: 'post',
+    success: (response) => {
+      document.getElementById('coupen-price').innerHTML = response.coupenPrice
+      document.getElementById(coupenId).innerHTML = 'Applied'
+    },
+  })
+}
 
-//   }
+function coupenDelete(coupenId) {
+  $.ajax({
+    url: '/admin/coupen-delete',
+    data: {
+      coupenId: coupenId,
+    },
+    method: 'post',
+    success: (response) => {
+      if (response) {
+        location.reload()
+      }
+    },
+  })
+}
 
-// }
-// })
-// }
+
+  function download(){
+    
+      const invoice = document.getElementById("invoice")
+      let opt = {
+          margin: 1,
+          filename: 'Order Invoice.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(invoice).set(opt).save()
+  
+  }
+
+
+  // var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+  // var yValues = [55, 49, 44, 24, 15];
+  // var barColors = ["red", "green","blue","orange","brown"];
+  
+  // new Chart("myChart", {
+  //   type: "bar",
+  //   data: {
+  //     labels: xValues,
+  //     datasets: [{
+  //       backgroundColor: barColors,
+  //       data: yValues
+  //     }]
+  //   },
+  //   options: {
+  //     legend: {display: false},
+  //     title: {
+  //       display: true,
+  //       text: "World Wine Production 2018"
+  //     }
+  //   }
+  // });

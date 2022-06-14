@@ -7,8 +7,8 @@
                         {{#if gen}}
                         <img src="/images/man.png" alt="" style="width: 5rem;">
                         {{else}}
-                         <img src="/images/girl.png" alt="" style="width: 5rem;">
-                         {{/if}}
+                        <img src="/images/girl.png" alt="" style="width: 5rem;">
+                        {{/if}}
                         <div class="col mx-2 d-flex flex-column justify-content-center">
                             <small>Hello,</small>
                             <h6 class="m-2"> {{profile.fname}}</h6>
@@ -16,30 +16,32 @@
                     </div>
                 </div>
                 <div class="row bg-white border shadow-sm my-2">
-                    <a href="/orders" class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
+                    <a href="/orders"
+                        class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
                         <h4>MY ORDERS</h4>
-                        
+                        <img src="/images/right.png" class="text-secondary" alt="" style="width: 2rem;">
                     </a>
 
                 </div>
                 <div class="row shadow-sm border my-2 bg-white">
-                    <a href="/cart" class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
+                    <a href="/cart"
+                        class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
                         <h4>MY CART</h4>
-                       
+                        <img src="/images/right.png" alt="" class="text-secondary" style="width: 2rem;">
                     </a>
                 </div>
 
             </div>
-            <div class="col-md-7 shadow-sm border bg-white mx-2 p-5 position-relative">
+            <div class="col-md-7 shadow-sm border bg-white p-5 position-relative">
                 <div class="position-absolute end-0 top-0 p-2">
                     <a href="/edit-profile/{{profile._id}}">
-                         <img src="/images/edit.png" alt="" style="width: 1.5rem;">
+                        <img src="/images/edit.png" alt="" style="width: 1.5rem;">
                     </a>
                 </div>
                 <h5>Personal Information</h5>
                 <div class="d-flex justify-content-between p-2">
                     <label class="text-secondary" for="">First Name</label>
-                    <h6 >{{profile.fname}}</h6>
+                    <h6>{{profile.fname}}</h6>
                 </div>
 
                 <div class="d-flex justify-content-between p-2">
@@ -57,12 +59,30 @@
                     <label class="text-secondary" for="">Email ID</label>
                     <h6>{{profile.email}}</h6>
                 </div>
+                <h5>Manage Addresses</h5>
+                <div class="border my-2">
+                   <a href="/create-pro-address" class="text-decoration-none"> <h6 class="text-primary px-3"><strong class="fs-4">+ </strong> ADD A NEW ADDRESS</h6></a>
+                </div>
+                {{#each profile.delivaryAddress}}
+                <div class=" border  justify-content-between mb-3 p-2">
+                    <div class=" d-flex justify-content-between ">
+                        <a style="font-size:8px ;" class="btn btn-sm btn-secondary" disabled>{{this.addressType}}</a>
+                        <div >
+                            <a class="mx-1" href="/edit-pro-address/{{this._id}}"><img src="/images/edit.png" alt="" style="width: 1rem;"></a>
+                            <a href="/delete-address/{{this._id}}"><img src="/images/delete1.png" alt="" style="width: 1rem;"></a>
+                        </div>
+                    </div>
+                    <p style="font-size:1rem ;" class="my-2"> {{this.fname}} {{this.lname}}   {{this.mobile}}</p>
+                    <p style="font-size:.9rem ;" class="my-2">{{this.address}} , {{this.locality}} , {{this.city}} , {{this.state}}
+                        -676309</p>
+                </div>
+                {{/each}}
             </div>
             <div class="col-md-4 shadow-sm  border my-2 bg-white">
-                <a href=""
+                <a href="/logout"
                     class="text-secondary text-decoration-none d-flex justify-content-between align-items-center">
                     <h4>LOGOUT</h4>
-                    <img src="/logout" alt="" style="width: 2rem;">
+                    <img src="/images/right.png" alt="" class="text-secondary" style="width: 2rem;">
                 </a>
             </div>
         </div>

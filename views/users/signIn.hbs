@@ -4,6 +4,11 @@
       <h1 class='text-center text-white'>
         Login
       </h1>
+       {{#if welcome}}
+    <div class="bg-light">
+      <h4 class="text-success p-2 my-3 ">{{welcome}}</h4>
+    </div>
+    {{/if}}
       <div class='mt-3'>
         <label for='email' class='form-label fw-bold text-white'>
           Email:

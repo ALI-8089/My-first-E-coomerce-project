@@ -18,16 +18,16 @@
                     <h6>{{this.products.year}}</h6>
                     <div class="d-flex align-items-center">
                         <h6 id="colorName">{{this.products.color}}</h6>
-                        <div class="color-box mx-5 pb-3" id="color-box"></div>
+                       
                     </div>
                     <h4 class="">₹ {{this.products.price}}</h4>
 
 
                     <div class="my-5">
-                        <button class="me-2"
+                        <button class="me-2 btn btn btn-sm border border-secondary border-2 rounded-circle"
                             onclick="changeQuantity('{{this._id}}','{{this.products._id}}','{{../user._id}}',-1)">-</button>
                         <span id="{{this.products._id}}">{{this.quantity}}</span>
-                        <button class="ms-2"
+                        <button class="ms-2 btn btn-sm border  border-secondary border-2 rounded-circle"
                             onclick="changeQuantity('{{this._id}}','{{this.products._id}}','{{../user._id}}',1)">+</button>
                     </div>
                 </div>
