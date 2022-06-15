@@ -4,6 +4,31 @@ const { ObjectId } = require('mongodb')
 const bcrypt = require('bcrypt')
 const async = require('hbs/lib/async')
 module.exports = {
+  doSignup: (data) => {
+    return new Promise(async (resolve, reject) => {
+      {
+        let admin = await db
+          .get()
+          .collection(collection.adminCollection)
+          .findOne({ email: data.email })
+        if (admin) {
+          resolve({ status: true })
+        } else {
+          data.password = await bcrypt.hash(data.password, 10)
+          let nData = {
+            email: data.email,
+            password: data.password,
+          }
+          db.get()
+            .collection(collection.adminCollection)
+            .insertOne(nData)
+            .then((response) => {
+              resolve({ status: false })
+            })
+        }
+      }
+    })
+  },
   doLogin: (data) => {
     return new Promise(async (resolve, reject) => {
       let response = {}

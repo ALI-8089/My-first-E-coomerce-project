@@ -16,7 +16,7 @@ require('dotenv').config()
 const cors = require('cors')
 app.use(
   cors({
-    origin: '*',
+    origin: '*', 
   }),
 )
 // view engine setup
@@ -44,7 +44,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongoUrl: 'mongodb://localhost:27017' }),
-    cookie: { maxAge: 7 * 24 * 60 * 60 },
+    cookie: { maxAge:60000000 },
   }),
 )
 db.connect((err) => {

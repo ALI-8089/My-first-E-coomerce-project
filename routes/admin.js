@@ -36,6 +36,22 @@ router.get('/', async function (req, res, next) {
     res.redirect('/admin/login')
   }
 })
+router.get('/signup',(req,res)=>{
+  res.render('admin/sign-up',{admin:true, signupErr: req.session.admin_signupErr})
+  req.session.admin_signupErr=false
+})
+router.post('/signup',(req,res)=>{
+  console.log(req.body);
+  adminDb.doSignup(req.body).then((response)=>{
+    if(response.status){
+      req.session.admin_signupErr = 'ADMIN IS ALREADY EXIST'
+      res.redirect('/admin/signup')
+    }else{
+      res.redirect('/admin/login')
+    }
+    
+  })
+})
 router.get('/login', (req, res) => {
   res.render('admin/login', { admin: true })
 })
