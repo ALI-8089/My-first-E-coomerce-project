@@ -13,7 +13,7 @@ module.exports = {
         .collection(collection.userCollection)
         .findOne({ email: data.email })
       if (user) {
-        console.log('user already exist')
+       
         resolve({ status: true })
       } else {
         data.password = await bcrypt.hash(data.password, 10)

@@ -364,23 +364,19 @@ module.exports = {
           },
         ])
         .toArray()
-      console.log(revenue)
 
       let arrRevenue = []
       let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
       for (i in months) {
-        console.log(months[i])
         let oneRevenue = 0
         for (j of revenue) {
           console.log('dddd', j.date)
           let oneMonth = new Date(parseInt(j.date)).getHours()
-          console.log(oneMonth)
           if (oneMonth === months[i]) {
             oneRevenue = oneRevenue + j.total
           }
         }
         arrRevenue.push(oneRevenue)
-        console.log(arrRevenue)
       }
       resolve(arrRevenue)
     })
