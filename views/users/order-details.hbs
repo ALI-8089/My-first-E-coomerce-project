@@ -2,14 +2,13 @@
     <div class="container-xl">
         <button class="btn btn-success my-3 " id="download-btn" type="button" onclick="download()">Download</button>
         <div id="invoice">
-            <div class=" p-2 bg-light mx-2 shadow-sm">
+            <div class="row p-2 bg-light mx-2 shadow-sm">
                 <h4>Delivery Address</h4>
 
-                <h6>{{Address.fname}} {{Address.lname}}</h6>
-               {{Address.address}} <br> {{Address.locality}} <br> {{Address.pincode}} ,
+                <h6>{{Address.fname}} {{Address.lname}}</h6> <small>    {{Address.address}} <br> {{Address.locality}} <br> {{Address.pincode}} ,
                 Kerala</small>
-                <h6 class="mt-3">Phone number</h6>
-                <small>{{Address.mobile}}</small>
+                <h6 class="mt-3">Phone number</h6> 
+                <small>{{Address.mobile}}</small>   
                 <h6 class="border-top py-2 my-3">Order Id : {{products.0._id}}</h6>
                 <h6>Payment Method : [{{method}}] </h6>
                 <h6 class="f w-bold text-success"> Total Amout : ₹ {{products.0.total}} </h6>
@@ -19,13 +18,15 @@
 
                 <P class="fw-bold text-primary text-end">Your order will be delivered within 7 days</P>
             </div>
-            <div class="row my-3">
+            <div class="row m-2 bg-light d-flex  shadow-sm "   >
                 {{#each products}}
                 {{#each this.product}}
-                <div class="col p-2 bg-light d-flex  align-items-center shadow-sm">
+                <div class="col-6 col-md-3 p-2 ">
                     <img src="data:{{this.image.0.contentType}};base64,{{this.image.0.image}}"
-                        style="width: 20rem;" alt="">
-                    <div class="p-2">
+                        style="width: 20rem;" class="img-fluid" alt="">
+                    
+                </div>
+                <div class="col-6 col-md-3 p-2">
                         <h4>{{this.name}}</h4>
                         <h6>{{this.brand}}</h6>
                         <p>{{this.color}}</p>
@@ -35,7 +36,6 @@
                                 {{../this.date}}</small>
                         </P>
                     </div>
-                </div>
                 {{/each}}
                 {{/each}}
 

@@ -1,7 +1,7 @@
-<section class="m-5">
-    <div class="container ">
+<section class="m-2">
+    <div class="container-md">
         {{#each products}}
-        <div class="row cart-row m-2 border-top p-2">
+        <div class="row cart-row  border-top p-2">
             <div class="delete-icon text-end">
                 <button onclick="deleteCartProduct('{{this._id}}','{{this.products._id}}')"> <img
                         src="/images/clarity_remove-solid.png"></button>
@@ -12,7 +12,7 @@
                     class="img-fluid" alt="">
 
             </div>
-            <div class="col-12 col-md-4 d-flex justify-content-center ">
+            <dicd ..v class="col-12 col-md-4 d-flex justify-content-center ">
                 <div class="cart mt-5">
                     <h1 class="mb-3">{{this.products.name}}</h1>
                     <h6>{{this.products.year}}</h6>

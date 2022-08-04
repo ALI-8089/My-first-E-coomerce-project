@@ -1,7 +1,8 @@
-const activePage =window.location.pathname
-console.log(window.location.pathname);
-const navLinks = document.querySelectorAll('.activity').forEach(link =>{
-  if(link.href.includes(`${activePage}`)){
+/* eslint-disable no-unused-vars */
+const activePage = window.location.pathname
+console.log(window.location.pathname)
+document.querySelectorAll('.activity').forEach((link) => {
+  if (link.href.includes(`${activePage}`)) {
     link.classList.add('active')
   }
 })
@@ -9,7 +10,7 @@ const navLinks = document.querySelectorAll('.activity').forEach(link =>{
 $('#product-spec').hide()
 
 $('#dis-ena-btn').click(function () {
-  var $this = $(this)
+  const $this = $(this)
   $this.toggleClass('dis-ena-btn')
   if ($this.hasClass('dis-ena-btn')) {
     $this.text('Exit spec').show().prop('disabled', false)
@@ -39,14 +40,14 @@ function addToCart(proId) {
       } else {
         location.href = '/guest-empty-cart'
       }
-    },
+    }
   })
 }
 
 function changeQuantity(cartId, proId, userId, count) {
-  let quantity = parseInt(document.getElementById(proId).innerHTML)
+  const quantity = parseInt(document.getElementById(proId).innerHTML)
   count = parseInt(count)
-  if (count == -1 && quantity == 1) {
+  if (count === -1 && quantity === 1) {
     if (confirm('Are you sure you want to remove this item?')) {
       $.ajax({
         url: '/change-product-quantity',
@@ -54,8 +55,8 @@ function changeQuantity(cartId, proId, userId, count) {
           user: userId,
           cart: cartId,
           product: proId,
-          count: count,
-          quantity: quantity,
+          count,
+          quantity
         },
         method: 'post',
         success: (response) => {
@@ -65,7 +66,7 @@ function changeQuantity(cartId, proId, userId, count) {
             document.getElementById(proId).innerHTML = quantity + count
             document.getElementById('total').innerHTML = response.total
           }
-        },
+        }
       })
     }
   } else {
@@ -75,8 +76,8 @@ function changeQuantity(cartId, proId, userId, count) {
         user: userId,
         cart: cartId,
         product: proId,
-        count: count,
-        quantity: quantity,
+        count,
+        quantity
       },
       method: 'post',
       success: (response) => {
@@ -86,25 +87,25 @@ function changeQuantity(cartId, proId, userId, count) {
           document.getElementById(proId).innerHTML = quantity + count
           document.getElementById('total').innerHTML = response.total
         }
-      },
+      }
     })
   }
 }
 
-function deleteCartProduct(cartId, proId) {
+function deleteCartProduct (cartId, proId) {
   if (confirm('Are you sure you want to remove this item?')) {
     $.ajax({
       url: '/delete-cart-product',
       data: {
         cart: cartId,
-        product: proId,
+        product: proId
       },
       method: 'post',
       success: (response) => {
         if (response.removeProduct) {
           location.reload()
         }
-      },
+      }
     })
   }
 }
@@ -122,25 +123,25 @@ $('#checkout-form').submit((e) => {
           location.href = '/orders'
         })
       } else {
-        let result = razorpayPayment(response, () => {
+        const result = razorpayPayment(response, () => {
           if (!result) {
             location.href = '/orders'
           }
         })
       }
-    }, 
+    },
   })
 })
- 
-function razorpayPayment(order) {  
-  var options = {
-    key:'rzp_test_AOR6LcLadTlBtS', // Enter the Key ID generated from the Dashboard
+
+function razorpayPayment (order) {
+  const options = {
+    key: 'rzp_test_AOR6LcLadTlBtS', // Enter the Key ID generated from the Dashboard
     amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     currency: 'INR',
     name: 'CycMaster',
     description: 'Test Transaction',
     image: 'https://example.com/your_logo',
-    order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    order_id: order.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
     handler: function (response) {
       verifyPayment(response, order)
     },
@@ -148,30 +149,30 @@ function razorpayPayment(order) {
     prefill: {
       name: 'Gaurav Kumar',
       email: 'gaurav.kumar@example.com',
-      contact: '9999999999',
+      contact: '9999999999'
     },
     notes: {
-      address: 'Razorpay Corporate Office', 
+      address: 'Razorpay Corporate Office',
     },
     theme: {
-      color: '#3399cc',
-    },
+      color: '#3399cc'
+    }
   }
-  var rzp1 = new Razorpay(options)
-  rzp1.on('payment.failed',(response) => { 
-    
-    alert("payment failed") 
-    location.href='/orders'
+  // eslint-disable-next-line no-undef
+  const rzp1 = new Razorpay(options)
+  rzp1.on('payment.failed', (response) => {
+    alert('payment failed')
+    location.href = '/orders'
   })
- 
+
   rzp1.open()
 }
-function verifyPayment(payment, order) {
+function verifyPayment (payment, order) {
   $.ajax({
     url: '/verify-payment',
     data: {
-      payment, 
-      order,
+      payment,
+      order
     },
     method: 'POST',
     success: (response) => {
@@ -187,25 +188,27 @@ function verifyPayment(payment, order) {
   })
 }
 // ******************admin*************
- 
+
+// eslint-disable-next-line no-undef
 $(document).ready(function () {
+  // eslint-disable-next-line no-undef
   $('#table_id').DataTable()
 })
 
 $(document).ready(function () {
   $('#add-btn').click(function () {
-    let value = $('#input').val()
+    const value = $('#input').val()
     $('#type').append(new Option(value), value)
   })
 })
-function coupen(total, discount, coupenId) {
-  
+// eslint-disable-next-line no-unused-vars
+function coupen (total, discount, coupenId) {
   $.ajax({
     url: '/coupen',
     data: {
-      total: total,
-      discount: discount,
-      coupenId: coupenId,
+      total,
+      discount,
+      coupenId
     },
     method: 'post',
     success: (response) => {
@@ -215,11 +218,12 @@ function coupen(total, discount, coupenId) {
   })
 }
 
-function coupenDelete(coupenId) {
+// eslint-disable-next-line no-unused-vars
+function coupenDelete (coupenId) {
   $.ajax({
     url: '/admin/coupen-delete',
     data: {
-      coupenId: coupenId,
+      coupenId
     },
     method: 'post',
     success: (response) => {
@@ -230,40 +234,37 @@ function coupenDelete(coupenId) {
   })
 }
 
-
-  function download(){
-    
-      const invoice = document.getElementById("invoice")
-      let opt = {
-          margin: 1,
-          filename: 'Order Invoice.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().from(invoice).set(opt).save()
-  
+function download () {
+  const invoice = document.getElementById('invoice')
+  const opt = {
+    margin: 1,
+    filename: 'Order Invoice.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
   }
+  // eslint-disable-next-line no-undef
+  html2pdf().from(invoice).set(opt).save()
+}
 
+// var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+// var yValues = [55, 49, 44, 24, 15];
+// var barColors = ["red", "green","blue","orange","brown"];
 
-  // var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
-  // var yValues = [55, 49, 44, 24, 15];
-  // var barColors = ["red", "green","blue","orange","brown"];
-  
-  // new Chart("myChart", {
-  //   type: "bar",
-  //   data: {
-  //     labels: xValues,
-  //     datasets: [{
-  //       backgroundColor: barColors,
-  //       data: yValues
-  //     }]
-  //   },
-  //   options: {
-  //     legend: {display: false},
-  //     title: {
-  //       display: true,
-  //       text: "World Wine Production 2018"
-  //     }
-  //   }
-  // });
+// new Chart("myChart", {
+//   type: "bar",
+//   data: {
+//     labels: xValues,
+//     datasets: [{
+//       backgroundColor: barColors,
+//       data: yValues
+//     }]
+//   },
+//   options: {
+//     legend: {display: false},
+//     title: {
+//       display: true,
+//       text: "World Wine Production 2018"
+//     }
+//   }
+// });

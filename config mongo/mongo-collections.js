@@ -1,8 +1,9 @@
-module.exports={
-    userCollection:'CycMasterUsers',
-    productCollection:'product',
-    cartCollection:'cart',
-    orderCollection:'order',
-    guestCollection:'guest',
-    adminCollection:'admin'
+module.exports = {
+  userCollection: 'CycMasterUsers',
+  productCollection: 'product',
+  orderCollection: 'order',
+  cartCollection: 'cart',
+  guestCollection: 'guest',
+  adminCollection: 'admin'
+
 }

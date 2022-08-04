@@ -1,13 +1,15 @@
-var db = require('../config mongo/mongo-connection')
+/* eslint-disable no-async-promise-executor */
+const db = require('../config mongo/mongo-connection')
 const collection = require('../config mongo/mongo-collections')
 const { ObjectId } = require('mongodb')
 const bcrypt = require('bcrypt')
-const async = require('hbs/lib/async')
+
 module.exports = {
   doLogin: (data) => {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
-      let response = {}
-      let admin = await db
+      const response = {}
+      const admin = await db
         .get()
         .collection(collection.adminCollection)
         .findOne({ email: data.email })
@@ -27,7 +29,7 @@ module.exports = {
   },
   addProduct: (image, product) => {
     // console.log(product)
-    let basicDetails = {
+    const basicDetails = {
       name: product.name,
       brand: product.brand,
       price: parseInt(product.price),
@@ -36,7 +38,7 @@ module.exports = {
       discription: product.discription,
       model: product.model,
       color: product.color,
-      image: image,
+      image,
       spec: [
         {
           frame: product.frame,
@@ -45,9 +47,9 @@ module.exports = {
           Wfront: product.Wfront,
           Wrear: product.Wrear,
           Srear: product.Srear,
-          rim: product.rim,
-        },
-      ],
+          rim: product.rim
+        }
+      ]
     }
     db.get()
       .collection(collection.productCollection)
@@ -55,8 +57,9 @@ module.exports = {
       .then((data) => {})
   },
   getAllProduct: () => {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
-      let products = await db
+      const products = await db
         .get()
         .collection(collection.productCollection)
         .find()
@@ -102,7 +105,7 @@ module.exports = {
               discription: proDetails.discription,
               model: proDetails.model,
               color: proDetails.color,
-              image: image,
+              image,
               spec: [
                 {
                   frame: proDetails.frame,
@@ -111,11 +114,11 @@ module.exports = {
                   Wfront: proDetails.Wfront,
                   Wrear: proDetails.Wrear,
                   Srear: proDetails.Srear,
-                  rim: proDetails.rim,
-                },
-              ],
-            },
-          },
+                  rim: proDetails.rim
+                }
+              ]
+            }
+          }
         )
         .then((resosponse) => {
           resolve()
@@ -124,7 +127,7 @@ module.exports = {
   },
   getUsers: () => {
     return new Promise(async (resolve, reject) => {
-      let user = await db
+      const user = await db
         .get()
         .collection(collection.userCollection)
         .find()
@@ -136,14 +139,14 @@ module.exports = {
   blockUser: (userId) => {
     console.log(userId)
     return new Promise(async (resolve, reject) => {
-      let block = await db
+      const block = await db
         .get()
         .collection(collection.userCollection)
         .updateOne(
           { _id: ObjectId(userId) },
           {
-            $set: { blocked: true },
-          },
+            $set: { blocked: true }
+          }
         )
       resolve(block)
     })
@@ -151,14 +154,14 @@ module.exports = {
   unBlockUser: (userId) => {
     console.log(userId)
     return new Promise(async (resolve, reject) => {
-      let unblocblock = await db
+      await db
         .get()
         .collection(collection.userCollection)
         .updateOne(
           { _id: ObjectId(userId) },
           {
-            $set: { blocked: false },
-          },
+            $set: { blocked: false }
+          }
         )
       resolve()
     })
@@ -166,12 +169,12 @@ module.exports = {
   userOrders: (userId) => {
     return new Promise(async (resolve, reject) => {
       console.log(userId)
-      let orders = await db
+      const orders = await db
         .get()
         .collection(collection.orderCollection)
         .aggregate([
           {
-            $match: { userId: ObjectId(userId) },
+            $match: { userId: ObjectId(userId) }
           },
 
           {
@@ -180,17 +183,17 @@ module.exports = {
               total: 1,
               date: 1,
               items: '$products.items',
-              quantity: '$products.quantity',
-            },
+              quantity: '$products.quantity'
+            }
           },
           {
             $lookup: {
               from: collection.productCollection,
               localField: 'items',
               foreignField: '_id',
-              as: 'products',
-            },
-          },
+              as: 'products'
+            }
+          }
         ])
         .toArray()
 
@@ -199,22 +202,22 @@ module.exports = {
   },
   totalByTheUser: (userId) => {
     return new Promise(async (resolve, reject) => {
-      let total = await db
+      const total = await db
         .get()
         .collection(collection.orderCollection)
         .aggregate([
           {
-            $match: { userId: ObjectId(userId) },
+            $match: { userId: ObjectId(userId) }
           },
           {
             $group: {
               _id: null,
-              total: { $sum: '$total' },
-            },
+              total: { $sum: '$total' }
+            }
           },
           {
-            $project: { total: 1, _id: 0 },
-          },
+            $project: { total: 1, _id: 0 }
+          }
         ])
         .toArray()
 
@@ -223,7 +226,7 @@ module.exports = {
   },
   allOrders: () => {
     return new Promise(async (resolve, reject) => {
-      let allOrders = await db
+      const allOrders = await db
         .get()
         .collection(collection.orderCollection)
         .aggregate([
@@ -232,17 +235,17 @@ module.exports = {
               status: 1,
               total: 1,
               date: 1,
-              items: '$products.items',
-            },
+              items: '$products.items'
+            }
           },
           {
             $lookup: {
               from: collection.productCollection,
               localField: 'items',
               foreignField: '_id',
-              as: 'products',
-            },
-          },
+              as: 'products'
+            }
+          }
         ])
         .toArray()
 
@@ -250,10 +253,10 @@ module.exports = {
     })
   },
   coupen: (data) => {
-    let coupenObj = {
+    const coupenObj = {
       type: 'coupen',
       name: data.name.toUpperCase(),
-      discount: parseInt(data.discount),
+      discount: parseInt(data.discount)
     }
     return new Promise((resolve, reject) => {
       db.get()
@@ -266,7 +269,7 @@ module.exports = {
   },
   getCoupen: () => {
     return new Promise(async (resolve, reject) => {
-      let coupen = await db
+      const coupen = await db
         .get()
         .collection(collection.adminCollection)
         .find({ type: 'coupen' })
@@ -278,7 +281,7 @@ module.exports = {
   coupenDelete: (coupenId) => {
     console.log(coupenId)
     return new Promise(async (resolve, reject) => {
-      let coupenDelete = await db
+      const coupenDelete = await db
         .get()
         .collection(collection.adminCollection)
         .deleteOne({ _id: ObjectId(coupenId.coupenId) })
@@ -287,19 +290,19 @@ module.exports = {
   },
   revenue: () => {
     return new Promise(async (resolve, reject) => {
-      let revenue = await db
+      const revenue = await db
         .get()
         .collection(collection.orderCollection)
         .aggregate([
           {
-            $match: { status: 'placed' },
+            $match: { status: 'placed' }
           },
           {
             $group: {
               _id: null,
-              revenue: { $sum: '$total' },
-            },
-          },
+              revenue: { $sum: '$total' }
+            }
+          }
         ])
         .toArray()
 
@@ -308,14 +311,17 @@ module.exports = {
   },
   orders: () => {
     return new Promise(async (resolve, reject) => {
-      let orders = await db.get().collection(collection.orderCollection).count()
+      const orders = await db
+        .get()
+        .collection(collection.orderCollection)
+        .count()
 
       resolve(orders)
     })
   },
   users: () => {
     return new Promise(async (resolve, reject) => {
-      let users = await db.get().collection(collection.userCollection).count()
+      const users = await db.get().collection(collection.userCollection).count()
 
       resolve(users)
     })
@@ -323,32 +329,32 @@ module.exports = {
 
   getRevenue: () => {
     return new Promise(async (resolve, reject) => {
-      let revenue = await db
+      const revenue = await db
         .get()
         .collection(collection.orderCollection)
         .aggregate([
           {
-            $match: { status: 'placed' },
+            $match: { status: 'placed' }
           },
           {
             $project: {
               date: 1,
               total: 1,
-              _id: 0,
-            },
-          },
+              _id: 0
+            }
+          }
         ])
         .toArray()
       console.log(revenue)
 
-      let arrRevenue = []
-      let months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      const arrRevenue = []
+      const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      // eslint-disable-next-line no-undef
       for (i in months) {
-        console.log(months[i])
         let oneRevenue = 0
+        // eslint-disable-next-line no-undef
         for (j of revenue) {
-          console.log('dddd', j.date)
-          let oneMonth = new Date(parseInt(j.date)).getHours()
+          const oneMonth = new Date(parseInt(j.date)).getHours()
           console.log(oneMonth)
           if (oneMonth === months[i]) {
             oneRevenue = oneRevenue + j.total
@@ -359,5 +365,5 @@ module.exports = {
       }
       resolve(arrRevenue)
     })
-  },
+  }
 }

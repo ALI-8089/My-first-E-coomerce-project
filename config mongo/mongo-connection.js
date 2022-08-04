@@ -1,5 +1,5 @@
 const state = {
-  db: null,
+  db: null
 }
 
 const mongoClient = require('mongodb').MongoClient

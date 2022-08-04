@@ -8,7 +8,7 @@ const usersRouter = require('./routes/user')
 const hbs = require('express-handlebars')
 const app = express()
 const db = require('./config mongo/mongo-connection')
-const nocache = require("nocache");
+const nocache = require('nocache')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
 require('dotenv').config()
@@ -16,8 +16,8 @@ require('dotenv').config()
 const cors = require('cors')
 app.use(
   cors({
-    origin: '*',
-  }),
+    origin: '*'
+  })
 )
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -27,9 +27,9 @@ app.engine(
   hbs.engine({
     extname: 'hbs',
     defaultLayout: 'layout',
-    layoutsDir: __dirname + '/views/layouts/',
-    partialsDir: __dirname + '/views/partials/',
-  }),
+    layoutsDir: path.join(__dirname, '/views/layouts/'),
+    partialsDir: path.join(__dirname, '/views/partials/')
+  })
 )
 // app.use(fileUpload())
 app.use(logger('dev'))
@@ -37,15 +37,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(nocache());
+app.use(nocache())
 app.use(
   session({
     secret: 'token',
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongoUrl: 'mongodb://localhost:27017' }),
-    cookie: { maxAge: 7 * 24 * 60 * 60 },
-  }),
+    cookie: { maxAge: 7 * 24 * 60 * 60 }
+  })
 )
 db.connect((err) => {
   if (err) {
